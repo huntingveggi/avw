@@ -20,7 +20,32 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 
 import de.mannheimer.imd.avw.api.model.Order;
 import de.mannheimer.imd.avw.api.persistence.OrderDao;
+import de.mannheimer.imd.avw.impl.persistence.OrderDaoImpl;
 
+/**
+ * Standard execution test class for {@link OrderDaoImpl}
+ * <p>
+ * This class tests the standard execution of available public methods in
+ * {@link OrderDaoImpl}.
+ * <p>
+ * Following method tests are covered:
+ * <p>
+ * {@link OrderDaoImpl#persist(Order)}
+ * <ul>
+ * <li>{@link OrderDaoImplExecutionTest#testPersistValidOrder()}</li>
+ * <li>{@link OrderDaoImplExecutionTest#testPersistNullOrder()}</li>
+ * </ul>
+ * <p>
+ * {@link OrderDaoImpl#findById(String)}
+ * <ul>
+ * <li>{@link OrderDaoImplExecutionTest#testFindOrderByInvalidIdString()}</li>
+ * <li>{@link OrderDaoImplExecutionTest#testFindOrderByNullIdString()}</li>
+ * <li>{@link OrderDaoImplExecutionTest#testFindOrderByValidIdString()}</li>
+ * </ul>
+ * 
+ * @author Dennis Ahaus
+ * 
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/META-INF/avw-impl/*-context.xml" })
 @TransactionConfiguration(defaultRollback = true)
@@ -46,11 +71,13 @@ public class OrderDaoImplExecutionTest {
 	@Before
 	public void setUp() throws Exception {
 
-		logger.info("----------- SET UP TEST ----------------------------------------------------");
+		logger.info("----------- SET UP ----------------------------------------------------");
 	}
 
 	@After
 	public void tearDown() throws Exception {
+
+		logger.info("----------- TEAR DOWN ----------------------------------------------------");
 
 		orderDao.delete(currentCreatedOrder);
 
