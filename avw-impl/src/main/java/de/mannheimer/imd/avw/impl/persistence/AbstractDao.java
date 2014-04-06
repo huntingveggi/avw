@@ -90,6 +90,9 @@ public abstract class AbstractDao<T> implements CrudDao<T> {
 	@Override
 	@javax.transaction.Transactional
 	public void persist(T obj) {
+		if (obj == null) {
+			throw new IllegalArgumentException("Can not persist a NULL object!");
+		}
 
 		logger.debug("Persisting " + obj);
 

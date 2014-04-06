@@ -53,10 +53,10 @@ public class OrderDaoImplExecutionTest {
 
 	Logger logger = LoggerFactory.getLogger(OrderDaoImplExecutionTest.class);
 
-	Order currentCreatedOrder;
-
 	@Inject
 	OrderDao orderDao;
+
+	Order currentOrder;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -71,49 +71,72 @@ public class OrderDaoImplExecutionTest {
 	@Before
 	public void setUp() throws Exception {
 
-		logger.info("----------- SET UP ----------------------------------------------------");
+		currentOrder = orderDao.getNewInstance();
+		orderDao.persist(currentOrder);
+
 	}
 
 	@After
 	public void tearDown() throws Exception {
 
-		logger.info("----------- TEAR DOWN ----------------------------------------------------");
-
-		orderDao.delete(currentCreatedOrder);
+		orderDao.delete(currentOrder);
 
 	}
 
+	/**
+	 * Tests method {@link OrderDaoImpl#persist(Order)}
+	 * <p>
+	 * Test persisting a normal and valid {@link Order}.
+	 */
 	@Test
 	public void testPersistValidOrder() {
 
-		currentCreatedOrder = orderDao.getNewInstance();
-		orderDao.persist(currentCreatedOrder);
+		Order order = currentOrder;
 
-		assertNotNull("Current created order is null", currentCreatedOrder);
-		assertNotNull("Documents list in order is null",
-				currentCreatedOrder.getDocuments());
-		assertNotNull("Documents list size is > 0", currentCreatedOrder
-				.getDocuments().size() == 0);
+		assertNotNull("Current created order is null", order);
+		assertNotNull("Documents list in order is null", order.getDocuments());
+		assertNotNull("Documents list size is > 0",
+				order.getDocuments().size() == 0);
 
 	}
 
-	@Test
-	public void testPersistNullOrder() {
+	/**
+	 * Tests method {@link OrderDaoImpl#persist(Order)}
+	 * <p>
+	 * Test persisting a <code>null</code> {@link Order}. 
+	 * {@link IllegalArgumentException} is expected because of <code>null</code>
+	 * argument.
+	 * 
+	 * @throws IllegalArgumentException
+	 *             Thrown because of <code>null</code> argument
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testPersistNullOrder() throws IllegalArgumentException {
 
 		orderDao.persist(null);
 
 	}
 
+	/**
+	 * Tests method {@link OrderDaoImpl#findById(String)}
+	 * <p>
+	 * Test to find order by a valid id string.
+	 */
 	@Test
 	public void testFindOrderByValidIdString() {
 
-		Order order = orderDao.findById(currentCreatedOrder.getId());
+		Order order = orderDao.findById(currentOrder.getId());
 		assertNotNull("Order find by id is null", order);
 		assertTrue("Persisted order id doesn't match",
-				order.getId().equals(currentCreatedOrder.getId()));
+				order.getId().equals(currentOrder.getId()));
 
 	}
 
+	/**
+	 * Tests method {@link OrderDaoImpl#findById(String)}
+	 * <p>
+	 * Test to find order by and invalid (not existing) id string.
+	 */
 	@Test
 	public void testFindOrderByInvalidIdString() {
 
@@ -124,6 +147,11 @@ public class OrderDaoImplExecutionTest {
 
 	}
 
+	/**
+	 * Tests method {@link OrderDaoImpl#findById(String)}
+	 * <p>
+	 * Test to find order by a <code>null</code> id string.
+	 */
 	@Test
 	public void testFindOrderByNullIdString() {
 
@@ -131,6 +159,31 @@ public class OrderDaoImplExecutionTest {
 		Order order2 = orderDao.findById(null);
 		assertNull(order2);
 
+	}
+
+	/**
+	 * Setter for {@link OrderDao} on which the tests will be executed. Actually
+	 * this object is marked with {@link Inject} means that it will may be
+	 * injected by a framework. If not you can use this setter to set this order
+	 * dao object.
+	 * 
+	 * @param orderDao
+	 *            The order dao object.
+	 */
+	public void setOrderDao(OrderDao orderDao) {
+
+		this.orderDao = orderDao;
+	}
+
+	/**
+	 * Returns the currently used {@link OrderDao} object on which all tests
+	 * will be executed.
+	 * 
+	 * @return The current used order dao object
+	 */
+	public OrderDao getOrderDao() {
+
+		return orderDao;
 	}
 
 }
