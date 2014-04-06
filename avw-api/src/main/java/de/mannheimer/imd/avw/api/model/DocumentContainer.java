@@ -4,6 +4,5 @@ import java.util.List;
 
 public interface DocumentContainer extends Entity, History {
 
-	List<Document> getDocuments();
 
 }

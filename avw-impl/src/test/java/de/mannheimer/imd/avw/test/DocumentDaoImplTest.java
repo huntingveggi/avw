@@ -4,7 +4,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -25,6 +24,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 
 import de.mannheimer.imd.avw.api.MimeTypes;
 import de.mannheimer.imd.avw.api.model.Document;
+import de.mannheimer.imd.avw.api.model.DocumentContainer;
 import de.mannheimer.imd.avw.api.persistence.DocumentDao;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -68,9 +68,14 @@ public class DocumentDaoImplTest {
 		if (currentDocument != null) {
 			documentDao.delete(currentDocument);
 		}
-		File docFile = new File("temp/" + currentDocumentId + ".pdf");
-		assertTrue("Document " + docFile.getAbsolutePath()
-				+ " still exists after delete!", !docFile.exists());
+
+		try {
+			InputStream in = documentDao.findStream(currentDocument);
+			IOUtils.closeQuietly(in);
+			throw new RuntimeException("Documnet file found despite delete!");
+		} catch (Exception e) {
+		}
+		
 		currentDocument = null;
 		currentDocumentId = null;
 
@@ -85,9 +90,14 @@ public class DocumentDaoImplTest {
 
 	}
 
+	@Test
 	public void findByDocumentContainerTest() {
 
-		assertTrue("Not yet implemented", false);
+		DocumentContainer container = currentDocument.getContainer();
+
+		List<Document> documents = documentDao.findBy(container);
+		assertTrue(documents.size() > 0);
+
 	}
 
 	@Test
@@ -95,7 +105,6 @@ public class DocumentDaoImplTest {
 
 		Document doc = documentDao.findById(currentDocumentId);
 		assertNotNull(doc);
-		assertNotNull(doc.getId());
 
 	}
 

@@ -44,6 +44,7 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 	@Override
 	@Transactional
 	public List<Document> findAll() {
+
 		return super.findAll(Document.class);
 	}
 
@@ -69,6 +70,7 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 	@Override
 	@Transactional
 	public Document findById(String id) {
+
 		return super.findById(id, Document.class);
 	}
 
@@ -76,6 +78,7 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 	 * @return
 	 */
 	public IdGenerator getGenerator() {
+
 		return generator;
 	}
 
@@ -104,6 +107,7 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 
 	protected void persistPhysical(Document doc, InputStream input)
 			throws IOException {
+
 		File target = getDocFile(doc);
 		logger.debug("Save document to " + target.getAbsolutePath());
 		if (target.exists()) {
@@ -114,6 +118,7 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 	}
 
 	protected File getDocFile(Document doc) {
+
 		String ext = MimeTypes.APPLICATION_PDF.getExtension();
 		File target = new File("temp/" + doc.getId() + "." + ext);
 		return target;
@@ -121,6 +126,8 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 
 	@Override
 	public InputStream findStream(Document doc) throws IOException {
+
+		logger.debug("Find stream for document " + doc);
 		File file = getDocFile(doc);
 		return new FileInputStream(file);
 	}
@@ -129,6 +136,7 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 	 * @param generator
 	 */
 	public void setGenerator(IdGenerator generator) {
+
 		this.generator = generator;
 	}
 
@@ -141,13 +149,13 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 
 		super.persist(doc);
 
-		logger.debug("Start persisting physical document " + doc);
 		this.persistPhysical(doc, inputStream);
 
 	}
 
 	@Override
 	public void persist(Document obj) {
+
 		throw new RuntimeException(
 				"This method should not be used directly outside this class!");
 	}
