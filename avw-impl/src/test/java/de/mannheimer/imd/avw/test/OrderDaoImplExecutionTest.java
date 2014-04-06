@@ -4,7 +4,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -18,7 +23,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
+import de.mannheimer.imd.avw.api.MimeTypes;
+import de.mannheimer.imd.avw.api.model.Document;
 import de.mannheimer.imd.avw.api.model.Order;
+import de.mannheimer.imd.avw.api.persistence.DocumentDao;
 import de.mannheimer.imd.avw.api.persistence.OrderDao;
 import de.mannheimer.imd.avw.impl.persistence.OrderDaoImpl;
 
@@ -29,12 +37,17 @@ import de.mannheimer.imd.avw.impl.persistence.OrderDaoImpl;
  * {@link OrderDaoImpl}.
  * <p>
  * Following method tests are covered:
+ * 
  * <p>
  * {@link OrderDaoImpl#persist(Order)}
  * <ul>
- * <li>{@link OrderDaoImplExecutionTest#testPersistValidOrder()}</li>
+ * <li>
+ * {@link OrderDaoImplExecutionTest#testPersistInitialOrder()}</li>
  * <li>{@link OrderDaoImplExecutionTest#testPersistNullOrder()}</li>
+ * <li>
+ * {@link OrderDaoImplExecutionTest#testPersistInitialOrderWithNewDocuments()}</li>
  * </ul>
+ * 
  * <p>
  * {@link OrderDaoImpl#findById(String)}
  * <ul>
@@ -56,7 +69,13 @@ public class OrderDaoImplExecutionTest {
 	@Inject
 	OrderDao orderDao;
 
+	@Inject
+	DocumentDao documentDao;
+
 	Order currentOrder;
+
+	static List<Order> createdOrders = new LinkedList<Order>();
+	static OrderDao staticOrderDao;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -66,30 +85,38 @@ public class OrderDaoImplExecutionTest {
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 
+		for (Order order : createdOrders) {
+			staticOrderDao.delete(order);
+		}
+
 	}
 
 	@Before
 	public void setUp() throws Exception {
 
+		if (staticOrderDao == null) {
+			staticOrderDao = this.orderDao;
+		}
+
 		currentOrder = orderDao.getNewInstance();
 		orderDao.persist(currentOrder);
+		createdOrders.add(currentOrder);
 
 	}
 
 	@After
 	public void tearDown() throws Exception {
 
-		orderDao.delete(currentOrder);
-
 	}
 
 	/**
 	 * Tests method {@link OrderDaoImpl#persist(Order)}
 	 * <p>
-	 * Test persisting a normal and valid {@link Order}.
+	 * Test persisting an initial, valid {@link Order} without existing
+	 * {@link Document}s.
 	 */
 	@Test
-	public void testPersistValidOrder() {
+	public void testPersistInitialOrder() {
 
 		Order order = currentOrder;
 
@@ -103,7 +130,7 @@ public class OrderDaoImplExecutionTest {
 	/**
 	 * Tests method {@link OrderDaoImpl#persist(Order)}
 	 * <p>
-	 * Test persisting a <code>null</code> {@link Order}. 
+	 * Test persisting a <code>null</code> {@link Order}.
 	 * {@link IllegalArgumentException} is expected because of <code>null</code>
 	 * argument.
 	 * 
@@ -114,6 +141,35 @@ public class OrderDaoImplExecutionTest {
 	public void testPersistNullOrder() throws IllegalArgumentException {
 
 		orderDao.persist(null);
+
+	}
+
+	/**
+	 * Tests method {@link OrderDaoImpl#persist(Order)}.
+	 * <p>
+	 * TODO comment
+	 * 
+	 * @throws IOException
+	 * 
+	 */
+	@Test
+	@Transactional
+	public void testPersistInitialOrderWithNewDocuments() throws IOException {
+
+		Order newOrder = orderDao.getNewInstance();
+		createdOrders.add(newOrder);
+
+		Document doc1 = documentDao.getNewInstance(MimeTypes.APPLICATION_PDF);
+		newOrder.getDocuments().add(doc1);
+
+		Document doc2 = documentDao.getNewInstance(MimeTypes.APPLICATION_PDF);
+		newOrder.getDocuments().add(doc2);
+
+		orderDao.persist(newOrder);
+
+		Order persistedOrder = orderDao.findById(newOrder.getId());
+
+		assertTrue(persistedOrder.getDocuments().size() == 2);
 
 	}
 

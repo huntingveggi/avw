@@ -10,6 +10,7 @@ public interface DocumentDao extends CrudDao<Document>, DocumentContainerDao {
 
 	void persist(Document doc, InputStream stream) throws IOException;
 
+	// FIXME remove exception here!!!
 	public Document getNewInstance(MimeTypes mimetype) throws IOException;
 
 	InputStream findStream(Document doc) throws IOException;
