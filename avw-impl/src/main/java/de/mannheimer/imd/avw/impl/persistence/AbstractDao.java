@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import de.mannheimer.imd.avw.api.IdGenerator;
 import de.mannheimer.imd.avw.api.persistence.CrudDao;
 
 /**
@@ -28,9 +29,13 @@ public abstract class AbstractDao<T> implements CrudDao<T> {
 	@Inject
 	SessionFactory sessionfactory;
 
+	@Inject
+	IdGenerator generator;
+
 	@Override
 	@javax.transaction.Transactional
 	public void delete(T obj) {
+
 		Session session = getSessionfactory().getCurrentSession();
 		session.delete(obj);
 		session.flush();
@@ -43,6 +48,7 @@ public abstract class AbstractDao<T> implements CrudDao<T> {
 	 */
 	@javax.transaction.Transactional
 	protected List<T> findAll(Class<? extends T> clazz) {
+
 		Session session = getSessionfactory().getCurrentSession();
 		Criteria crit = session.createCriteria(clazz);
 		@SuppressWarnings("unchecked")
@@ -57,6 +63,7 @@ public abstract class AbstractDao<T> implements CrudDao<T> {
 	 */
 	@javax.transaction.Transactional
 	protected T findById(int id, Class<? extends T> clazz) {
+
 		return this.findById("" + id);
 	}
 
@@ -67,6 +74,7 @@ public abstract class AbstractDao<T> implements CrudDao<T> {
 	 */
 	@javax.transaction.Transactional
 	protected T findById(String id, Class<? extends T> clazz) {
+
 		Session session = getSessionfactory().getCurrentSession();
 		Criteria crit = session.createCriteria(clazz);
 		@SuppressWarnings("unchecked")
@@ -75,6 +83,7 @@ public abstract class AbstractDao<T> implements CrudDao<T> {
 	}
 
 	public SessionFactory getSessionfactory() {
+
 		return sessionfactory;
 	}
 
@@ -91,15 +100,27 @@ public abstract class AbstractDao<T> implements CrudDao<T> {
 	}
 
 	public void setSessionfactory(SessionFactory sessionfactory) {
+
 		this.sessionfactory = sessionfactory;
 	}
 
 	@Override
 	@javax.transaction.Transactional
 	public void update(T obj) {
+
 		Session session = getSessionfactory().getCurrentSession();
 		session.update(obj);
 		session.flush();
+	}
+
+	protected IdGenerator getGenerator() {
+
+		return generator;
+	}
+
+	protected void setGenerator(IdGenerator generator) {
+
+		this.generator = generator;
 	}
 
 }
