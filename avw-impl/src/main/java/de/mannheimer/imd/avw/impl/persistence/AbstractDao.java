@@ -82,7 +82,7 @@ public abstract class AbstractDao<T> implements CrudDao<T> {
 		return result;
 	}
 
-	public SessionFactory getSessionfactory() {
+	protected SessionFactory getSessionfactory() {
 
 		return sessionfactory;
 	}
@@ -99,7 +99,7 @@ public abstract class AbstractDao<T> implements CrudDao<T> {
 
 	}
 
-	public void setSessionfactory(SessionFactory sessionfactory) {
+	protected void setSessionfactory(SessionFactory sessionfactory) {
 
 		this.sessionfactory = sessionfactory;
 	}
