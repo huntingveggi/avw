@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 import org.apache.commons.io.FileUtils;
@@ -37,9 +36,6 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 		DocumentDao {
 
 	final Logger logger = LoggerFactory.getLogger(DocumentDaoImpl.class);
-
-	@Inject
-	IdGenerator generator;
 
 	@Override
 	@Transactional
@@ -90,11 +86,22 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 		}
 
 		DocumentImpl doc = new DocumentImpl(mimetype);
-		DocumentContainerImpl containerImpl = new DocumentContainerImpl();
-		containerImpl.setId(generator.createUniqueId());
-		doc.setContainer(containerImpl);
-		doc.setId(generator.createUniqueId());
+		doc.setId(getGenerator().createUniqueId());
+
+		DocumentContainer container = getNewDocumentContainerInstance();
+		doc.setContainer(container);
+
 		return doc;
+	}
+
+	/**
+	 * @return
+	 */
+	protected DocumentContainer getNewDocumentContainerInstance() {
+
+		DocumentContainerImpl container = new DocumentContainerImpl();
+		container.setId(getGenerator().createUniqueId());
+		return container;
 	}
 
 	protected void deletePhysical(Document doc) {
