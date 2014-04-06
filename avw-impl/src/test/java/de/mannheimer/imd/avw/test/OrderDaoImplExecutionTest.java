@@ -24,9 +24,9 @@ import de.mannheimer.imd.avw.api.persistence.OrderDao;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/META-INF/avw-impl/*-context.xml" })
 @TransactionConfiguration(defaultRollback = true)
-public class OrderDaoImplTest {
+public class OrderDaoImplExecutionTest {
 
-	Logger logger = LoggerFactory.getLogger(OrderDaoImplTest.class);
+	Logger logger = LoggerFactory.getLogger(OrderDaoImplExecutionTest.class);
 
 	Order currentCreatedOrder;
 
@@ -46,19 +46,21 @@ public class OrderDaoImplTest {
 	@Before
 	public void setUp() throws Exception {
 
-		logger.info("----------- SET UP -----------------------------------------------------------");
-		currentCreatedOrder = orderDao.getNewInstance();
-		orderDao.persist(currentCreatedOrder);
-		logger.info("----------------------------");
+		logger.info("----------- SET UP TEST ----------------------------------------------------");
 	}
 
 	@After
 	public void tearDown() throws Exception {
 
+		orderDao.delete(currentCreatedOrder);
+
 	}
 
 	@Test
-	public void testPersist() {
+	public void testPersistValidOrder() {
+
+		currentCreatedOrder = orderDao.getNewInstance();
+		orderDao.persist(currentCreatedOrder);
 
 		assertNotNull("Current created order is null", currentCreatedOrder);
 		assertNotNull("Documents list in order is null",
@@ -69,11 +71,19 @@ public class OrderDaoImplTest {
 	}
 
 	@Test
+	public void testPersistNullOrder() {
+
+		orderDao.persist(null);
+
+	}
+
+	@Test
 	public void testFindOrderByValidIdString() {
 
 		Order order = orderDao.findById(currentCreatedOrder.getId());
-		assertNotNull(order);
-		assertTrue(order.getId().equals(currentCreatedOrder.getId()));
+		assertNotNull("Order find by id is null", order);
+		assertTrue("Persisted order id doesn't match",
+				order.getId().equals(currentCreatedOrder.getId()));
 
 	}
 
