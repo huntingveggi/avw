@@ -31,15 +31,15 @@ import de.mannheimer.imd.avw.api.persistence.OrderDao;
 import de.mannheimer.imd.avw.impl.persistence.OrderDaoImpl;
 
 /**
- * Standard execution test class for {@link OrderDaoImpl}
+ * Standard execution test class for {@link OrderDao}
  * <p>
  * This class tests the standard execution of available public methods in
- * {@link OrderDaoImpl}.
+ * {@link OrderDao} implementation.
  * <p>
  * Following method tests are covered:
  * 
  * <p>
- * {@link OrderDaoImpl#persist(Order)}
+ * {@link OrderDao#persist(Order)}
  * <ul>
  * <li>
  * {@link OrderDaoImplExecutionTest#testPersistInitialOrder()}</li>
@@ -49,7 +49,7 @@ import de.mannheimer.imd.avw.impl.persistence.OrderDaoImpl;
  * </ul>
  * 
  * <p>
- * {@link OrderDaoImpl#findById(String)}
+ * {@link OrderDao#findById(String)}
  * <ul>
  * <li>{@link OrderDaoImplExecutionTest#testFindOrderByInvalidIdString()}</li>
  * <li>{@link OrderDaoImplExecutionTest#testFindOrderByNullIdString()}</li>
