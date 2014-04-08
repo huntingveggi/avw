@@ -12,6 +12,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -148,7 +149,7 @@ public class DocumentDaoImplExecutionTest {
 	public void testFindByNullIdString() {
 
 		Document doc = documentDao.findById(null);
-		assertNotNull(doc);
+		Assert.assertNull(doc);
 
 	}
 

@@ -75,6 +75,10 @@ public abstract class AbstractDao<T> implements CrudDao<T> {
 	@javax.transaction.Transactional
 	protected T findById(String id, Class<? extends T> clazz) {
 
+		if (id == null) {
+			throw new IllegalArgumentException(
+					"Execption while try to find an entity: Identifier is null");
+		}
 		Session session = getSessionfactory().getCurrentSession();
 		Criteria crit = session.createCriteria(clazz);
 		@SuppressWarnings("unchecked")
@@ -90,6 +94,7 @@ public abstract class AbstractDao<T> implements CrudDao<T> {
 	@Override
 	@javax.transaction.Transactional
 	public void persist(T obj) {
+
 		if (obj == null) {
 			throw new IllegalArgumentException("Can not persist a NULL object!");
 		}

@@ -66,7 +66,7 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 	@Override
 	@Transactional
 	public Document findById(String id) {
-
+		
 		return super.findById(id, Document.class);
 	}
 
