@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import de.ahaus.dennis.javautils.impl.helper.Assert;
 import de.mannheimer.imd.avw.api.IdGenerator;
 import de.mannheimer.imd.avw.api.persistence.CrudDao;
 
@@ -62,17 +63,6 @@ public abstract class AbstractDao<T> implements CrudDao<T> {
 	 * @return
 	 */
 	@javax.transaction.Transactional
-	protected T findById(int id, Class<? extends T> clazz) {
-
-		return this.findById("" + id);
-	}
-
-	/**
-	 * @param id
-	 * @param clazz
-	 * @return
-	 */
-	@javax.transaction.Transactional
 	protected T findById(String id, Class<? extends T> clazz) {
 
 		if (id == null) {
@@ -109,6 +99,8 @@ public abstract class AbstractDao<T> implements CrudDao<T> {
 
 	protected void setSessionfactory(SessionFactory sessionfactory) {
 
+		Assert.notNull(sessionfactory);
+
 		this.sessionfactory = sessionfactory;
 	}
 
@@ -127,6 +119,8 @@ public abstract class AbstractDao<T> implements CrudDao<T> {
 	}
 
 	protected void setGenerator(IdGenerator generator) {
+
+		Assert.notNull(generator);
 
 		this.generator = generator;
 	}

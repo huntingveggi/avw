@@ -1,7 +1,6 @@
 package de.mannheimer.imd.avw.test;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -11,10 +10,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
-import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -35,26 +33,6 @@ import de.mannheimer.imd.avw.impl.persistence.OrderDaoImpl;
  * <p>
  * This class tests the standard execution of available public methods in
  * {@link OrderDao} implementation.
- * <p>
- * Following method tests are covered:
- * 
- * <p>
- * {@link OrderDao#persist(Order)}
- * <ul>
- * <li>
- * {@link OrderDaoImplExecutionTest#testPersistInitialOrder()}</li>
- * <li>{@link OrderDaoImplExecutionTest#testPersistNullOrder()}</li>
- * <li>
- * {@link OrderDaoImplExecutionTest#testPersistInitialOrderWithNewDocuments()}</li>
- * </ul>
- * 
- * <p>
- * {@link OrderDao#findById(String)}
- * <ul>
- * <li>{@link OrderDaoImplExecutionTest#testFindOrderByInvalidIdString()}</li>
- * <li>{@link OrderDaoImplExecutionTest#testFindOrderByNullIdString()}</li>
- * <li>{@link OrderDaoImplExecutionTest#testFindOrderByValidIdString()}</li>
- * </ul>
  * 
  * @author Dennis Ahaus
  * 
@@ -76,11 +54,6 @@ public class OrderDaoImplExecutionTest {
 
 	static List<Order> createdOrders = new LinkedList<Order>();
 	static OrderDao staticOrderDao;
-
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-
-	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
@@ -104,11 +77,6 @@ public class OrderDaoImplExecutionTest {
 
 	}
 
-	@After
-	public void tearDown() throws Exception {
-
-	}
-
 	/**
 	 * Tests method {@link OrderDaoImpl#persist(Order)}
 	 * <p>
@@ -124,6 +92,8 @@ public class OrderDaoImplExecutionTest {
 		assertNotNull("Documents list in order is null", order.getDocuments());
 		assertNotNull("Documents list size is > 0",
 				order.getDocuments().size() == 0);
+		Assert.assertNotNull("order.messages is null", order.getMessages());
+		Assert.assertNotNull("order.messages is null", order.getState());
 
 	}
 
@@ -138,7 +108,7 @@ public class OrderDaoImplExecutionTest {
 	 *             Thrown because of <code>null</code> argument
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testPersistNullOrder() throws IllegalArgumentException {
+	public void testPersistNullOrder() {
 
 		orderDao.persist(null);
 
@@ -182,9 +152,10 @@ public class OrderDaoImplExecutionTest {
 	public void testFindOrderByValidIdString() {
 
 		Order order = orderDao.findById(currentOrder.getId());
-		assertNotNull("Order find by id is null", order);
-		assertTrue("Persisted order id doesn't match",
-				order.getId().equals(currentOrder.getId()));
+
+		Assert.assertNotNull("Order find by id is null", order);
+		Assert.assertTrue("Persisted order id doesn't match", order.getId()
+				.equals(currentOrder.getId()));
 
 	}
 
@@ -199,7 +170,8 @@ public class OrderDaoImplExecutionTest {
 		// test not existing id string
 		String wrongIdString = System.currentTimeMillis() + "123--123";
 		Order order = orderDao.findById(wrongIdString);
-		assertNull(order);
+
+		Assert.assertNull(order);
 
 	}
 
@@ -208,38 +180,29 @@ public class OrderDaoImplExecutionTest {
 	 * <p>
 	 * Test to find order by a <code>null</code> id string.
 	 */
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void testFindOrderByNullIdString() {
 
 		// test null string
-		Order order2 = orderDao.findById(null);
-		assertNull(order2);
+		orderDao.findById(null);
 
 	}
 
-	/**
-	 * Setter for {@link OrderDao} on which the tests will be executed. Actually
-	 * this object is marked with {@link Inject} means that it will may be
-	 * injected by a framework. If not you can use this setter to set this order
-	 * dao object.
-	 * 
-	 * @param orderDao
-	 *            The order dao object.
-	 */
-	public void setOrderDao(OrderDao orderDao) {
+	@Test
+	public void testFindAll() {
 
-		this.orderDao = orderDao;
+		List<Order> orders = orderDao.findAll();
+		Assert.assertTrue(orders.size() > 0);
 	}
 
-	/**
-	 * Returns the currently used {@link OrderDao} object on which all tests
-	 * will be executed.
-	 * 
-	 * @return The current used order dao object
-	 */
-	public OrderDao getOrderDao() {
+	@Test
+	public void testGetNewInstance() {
 
-		return orderDao;
+		Order order = orderDao.getNewInstance();
+		Assert.assertNotNull("order is null", order);
+		Assert.assertNotNull("order.id is null", order.getId());
+		Assert.assertNotNull("order.creationDate is null",
+				order.getCreationDate());
 	}
 
 }

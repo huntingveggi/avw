@@ -19,7 +19,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 import de.ahaus.dennis.javautils.impl.helper.Assert;
-import de.mannheimer.imd.avw.api.IdGenerator;
 import de.mannheimer.imd.avw.api.MimeTypes;
 import de.mannheimer.imd.avw.api.model.Document;
 import de.mannheimer.imd.avw.api.model.DocumentContainer;
@@ -73,14 +72,6 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 		Assert.notNull(id);
 
 		return super.findById(id, Document.class);
-	}
-
-	/**
-	 * @return
-	 */
-	public IdGenerator getGenerator() {
-
-		return generator;
 	}
 
 	@Override
@@ -149,16 +140,6 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 		logger.debug("Find stream for document " + doc);
 		File file = getDocFile(doc);
 		return new FileInputStream(file);
-	}
-
-	/**
-	 * @param generator
-	 */
-	public void setGenerator(IdGenerator generator) {
-
-		Assert.notNull(generator);
-
-		this.generator = generator;
 	}
 
 	@Override
