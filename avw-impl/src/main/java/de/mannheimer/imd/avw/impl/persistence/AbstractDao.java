@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.persistence.Transient;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -11,6 +12,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Repository;
 
 import de.ahaus.dennis.javautils.impl.helper.Assert;
@@ -23,9 +27,12 @@ import de.mannheimer.imd.avw.api.persistence.CrudDao;
  * @param <T>
  */
 @Repository
-public abstract class AbstractDao<T> implements CrudDao<T> {
+public abstract class AbstractDao<T> implements CrudDao<T>,
+		ApplicationContextAware {
 
 	Logger logger = LoggerFactory.getLogger(AbstractDao.class);
+
+	private ApplicationContext context;
 
 	@Inject
 	SessionFactory sessionfactory;
@@ -123,6 +130,20 @@ public abstract class AbstractDao<T> implements CrudDao<T> {
 		Assert.notNull(generator);
 
 		this.generator = generator;
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext ctx)
+			throws BeansException {
+
+		this.context = ctx;
+
+	}
+
+	@Transient
+	public ApplicationContext getContext() {
+
+		return context;
 	}
 
 }

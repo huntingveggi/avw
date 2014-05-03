@@ -1,4 +1,4 @@
-package de.mannheimer.imd.avw.test;
+package de.mannheimer.imd.avw.test.persistence;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -93,7 +93,8 @@ public class OrderDaoImplExecutionTest {
 		assertNotNull("Documents list size is > 0",
 				order.getDocuments().size() == 0);
 		Assert.assertNotNull("order.messages is null", order.getMessages());
-		Assert.assertNotNull("order.messages is null", order.getState());
+		Assert.assertNotNull("order.state is null", order.getState());
+		Assert.assertNotNull("order.comment is null", order.getComment());
 
 	}
 

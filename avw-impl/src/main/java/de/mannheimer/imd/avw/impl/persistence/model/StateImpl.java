@@ -1,5 +1,6 @@
 package de.mannheimer.imd.avw.impl.persistence.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.mannheimer.imd.avw.api.model.State;
@@ -8,8 +9,8 @@ public class StateImpl implements State {
 
 	private String name;
 	private String description;
-	private List<State> allowedBackwardsStates;
-	private List<State> allowedForwardStatess;
+	private List<State> allowedBackwardsStates = new ArrayList<State>();
+	private List<State> allowedForwardStates = new ArrayList<State>();
 
 	@Override
 	public String getName() {
@@ -45,14 +46,14 @@ public class StateImpl implements State {
 	}
 
 	@Override
-	public List<State> getAllowedForwardStatess() {
+	public List<State> getAllowedForwardStates() {
 
-		return allowedForwardStatess;
+		return allowedForwardStates;
 	}
 
-	public void setAllowedForwardStatess(List<State> allowedForwardStatess) {
+	public void setAllowedForwardStates(List<State> allowedForwardStatess) {
 
-		this.allowedForwardStatess = allowedForwardStatess;
+		this.allowedForwardStates = allowedForwardStatess;
 	}
 
 }

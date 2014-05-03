@@ -8,7 +8,7 @@ public interface State {
 
 	String getDescription();
 
-	public abstract List<State> getAllowedForwardStatess();
+	public abstract List<State> getAllowedForwardStates();
 
 	public abstract List<State> getAllowedBackwardStates();
 

@@ -1,4 +1,4 @@
-package de.mannheimer.imd.avw.test;
+package de.mannheimer.imd.avw.test.persistence;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

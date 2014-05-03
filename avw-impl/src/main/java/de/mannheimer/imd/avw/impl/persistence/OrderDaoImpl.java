@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 import de.mannheimer.imd.avw.api.model.Order;
+import de.mannheimer.imd.avw.api.model.State;
 import de.mannheimer.imd.avw.api.persistence.OrderDao;
 import de.mannheimer.imd.avw.impl.persistence.model.OrderImpl;
 
@@ -34,6 +35,8 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
 
 		OrderImpl order = new OrderImpl();
 		order.setId(getGenerator().createUniqueId());
+		State initialState = getContext().getBean("initial", State.class);
+		order.setState(initialState);
 		return order;
 	}
 

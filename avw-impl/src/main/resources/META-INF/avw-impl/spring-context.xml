@@ -56,6 +56,11 @@
 	</bean>
 
 
+	<bean id="initial" class="de.mannheimer.imd.avw.impl.persistence.model.StateImpl">
+		<property name="name" value="initial" />
+		<property name="description" value="initial state" />
+	</bean>
+
 
 
 </beans>
