@@ -6,6 +6,8 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import de.ahaus.dennis.javautils.impl.helper.Assert;
+
 @Named
 public class ApplicatonContextHelper implements ApplicationContextAware {
 
@@ -15,9 +17,7 @@ public class ApplicatonContextHelper implements ApplicationContextAware {
 	public void setApplicationContext(ApplicationContext applicationContext)
 			throws BeansException {
 
-		if (context == null) {
-			ApplicatonContextHelper.context = applicationContext;
-		}
+		setContext(applicationContext);
 
 	}
 
@@ -27,6 +27,10 @@ public class ApplicatonContextHelper implements ApplicationContextAware {
 	}
 
 	public static void setContext(ApplicationContext context) {
+
+		Assert.notNull(
+				"Error trying to set ApplicationContext: Parameter context is null!",
+				context);
 
 		ApplicatonContextHelper.context = context;
 	}

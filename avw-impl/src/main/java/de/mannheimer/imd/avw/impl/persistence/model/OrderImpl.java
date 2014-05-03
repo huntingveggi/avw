@@ -51,6 +51,9 @@ public class OrderImpl extends HistoryImpl implements Order {
 
 	public void setDocuments(List<Document> documents) {
 
+		Assert.notNull(
+				"Error while trying to set documents list: Parameter for documents list ist null!",
+				documents);
 		this.documents = documents;
 	}
 
@@ -63,6 +66,9 @@ public class OrderImpl extends HistoryImpl implements Order {
 
 	public void setMessages(List<Message> messages) {
 
+		Assert.notNull(
+				"Error while trying to set message list: Parameter for message list is null!",
+				messages);
 		this.messages = messages;
 	}
 
@@ -109,6 +115,10 @@ public class OrderImpl extends HistoryImpl implements Order {
 	@Override
 	public void setComment(String comment) {
 
+		Assert.notNull(
+				"Error while trying to set comment: Parameter for comment is null!",
+				comment);
+
 		this.comment = comment;
 	}
 
@@ -116,12 +126,18 @@ public class OrderImpl extends HistoryImpl implements Order {
 	public ApplicationContext getContext() {
 
 		if (this.context == null) {
-			this.context = ApplicatonContextHelper.getContext();
+			ApplicationContext ctx = ApplicatonContextHelper.getContext();
+			setContext(ctx);
 		}
+
 		return context;
 	}
 
 	public void setContext(ApplicationContext context) {
+
+		Assert.notNull(
+				"Errir while trying to set context: Parameter for context is null!",
+				context);
 
 		this.context = context;
 	}
