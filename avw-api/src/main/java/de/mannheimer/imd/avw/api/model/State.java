@@ -1,9 +1,15 @@
 package de.mannheimer.imd.avw.api.model;
 
-public interface State extends Entity {
+import java.util.List;
+
+public interface State {
 
 	String getName();
 
 	String getDescription();
+
+	public abstract List<State> getAllowedForwardStatess();
+
+	public abstract List<State> getAllowedBackwardStates();
 
 }
