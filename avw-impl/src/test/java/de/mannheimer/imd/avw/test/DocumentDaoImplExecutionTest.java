@@ -12,9 +12,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -24,45 +24,18 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
+import de.ahaus.dennis.javautils.impl.junit.annotations.ClassUnderTest;
 import de.mannheimer.imd.avw.api.MimeTypes;
 import de.mannheimer.imd.avw.api.model.Document;
 import de.mannheimer.imd.avw.api.model.DocumentContainer;
 import de.mannheimer.imd.avw.api.persistence.DocumentDao;
+import de.mannheimer.imd.avw.impl.persistence.DocumentDaoImpl;
 
 /**
  * Standard execution test for {@link DocumentDao} implementation.
  * 
  * This class tests the standard execution of available public methods in
  * {@link DocumentDao} implementation.
- * <p>
- * Following method tests are covered:
- * 
- * <p>
- * {@link DocumentDao#findAll()}
- * <ul>
- * <li>{@link DocumentDaoImplExecutionTest#testFindAll()}</li>
- * </ul>
- * 
- * <p>
- * {@link DocumentDao#findBy(DocumentContainer)}
- * <ul>
- * <li>{@link DocumentDaoImplExecutionTest#testFindByValidDocumentContainer()}</li>
- * </ul>
- * 
- * <p>
- * {@link DocumentDao#findById(String)}
- * <ul>
- * <li>{@link DocumentDaoImplExecutionTest#testFindByValidAndExistingIdString()}
- * </li>
- * <li>{@link DocumentDaoImplExecutionTest#testFindByNullIdString()}</li>
- * </ul>
- * 
- * <p>
- * {@link DocumentDao#getNewInstance(MimeTypes)}
- * <ul>
- * <li>{@link DocumentDaoImplExecutionTest#testGetNewValidInstance()}</li>
- * </ul>
- * 
  * 
  * @author Dennis Ahaus
  * 
@@ -70,6 +43,7 @@ import de.mannheimer.imd.avw.api.persistence.DocumentDao;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/META-INF/avw-impl/*-context.xml" })
 @TransactionConfiguration(defaultRollback = true)
+@ClassUnderTest(value = DocumentDaoImpl.class)
 public class DocumentDaoImplExecutionTest {
 
 	Logger logger = LoggerFactory.getLogger(DocumentDaoImplExecutionTest.class);
@@ -81,11 +55,7 @@ public class DocumentDaoImplExecutionTest {
 	static DocumentDao staticDocumentDao = null;
 	static List<Document> createdDocuments = new LinkedList<Document>();
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-
-	}
-
+	@AfterClass
 	public static void tearDownAfterClass() {
 
 		Iterator<Document> it = createdDocuments.iterator();
@@ -182,6 +152,18 @@ public class DocumentDaoImplExecutionTest {
 
 		documentDao.update(null);
 
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void testPersistMethodWithValidDocument() {
+
+		documentDao.persist(currentDocument);
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void testPersistMethodWithNullDocument() {
+
+		documentDao.persist(null);
 	}
 
 	@Test

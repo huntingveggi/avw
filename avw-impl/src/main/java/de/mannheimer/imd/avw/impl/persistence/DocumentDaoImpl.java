@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
+import de.ahaus.dennis.javautils.impl.helper.Assert;
 import de.mannheimer.imd.avw.api.IdGenerator;
 import de.mannheimer.imd.avw.api.MimeTypes;
 import de.mannheimer.imd.avw.api.model.Document;
@@ -48,6 +49,8 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 	@Transactional
 	public List<Document> findBy(DocumentContainer container) {
 
+		Assert.notNull(container);
+
 		Session session = getSessionfactory().getCurrentSession();
 		Criteria crit = session.createCriteria(Document.class);
 		crit.add(Restrictions.eq("container", container));
@@ -66,7 +69,9 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 	@Override
 	@Transactional
 	public Document findById(String id) {
-		
+
+		Assert.notNull(id);
+
 		return super.findById(id, Document.class);
 	}
 
@@ -81,9 +86,7 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 	@Override
 	public Document getNewInstance(MimeTypes mimetype) throws IOException {
 
-		if (mimetype == null) {
-			throw new NullPointerException("MimeType is null");
-		}
+		Assert.notNull(mimetype);
 
 		DocumentImpl doc = new DocumentImpl(mimetype);
 		doc.setId(getGenerator().createUniqueId());
@@ -106,6 +109,8 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 
 	protected void deletePhysical(Document doc) {
 
+		Assert.notNull(doc);
+
 		File target = getDocFile(doc);
 		logger.debug("Deleting physical document " + target.getAbsolutePath());
 		target.delete();
@@ -114,6 +119,9 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 
 	protected void persistPhysical(Document doc, InputStream input)
 			throws IOException {
+
+		Assert.notNull(doc);
+		Assert.notNull(input);
 
 		File target = getDocFile(doc);
 		logger.debug("Save document to " + target.getAbsolutePath());
@@ -126,6 +134,8 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 
 	protected File getDocFile(Document doc) {
 
+		Assert.notNull(doc);
+
 		String ext = MimeTypes.APPLICATION_PDF.getExtension();
 		File target = new File("temp/" + doc.getId() + "." + ext);
 		return target;
@@ -133,6 +143,8 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 
 	@Override
 	public InputStream findStream(Document doc) throws IOException {
+
+		Assert.notNull(doc);
 
 		logger.debug("Find stream for document " + doc);
 		File file = getDocFile(doc);
@@ -144,6 +156,8 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 	 */
 	public void setGenerator(IdGenerator generator) {
 
+		Assert.notNull(generator);
+
 		this.generator = generator;
 	}
 
@@ -151,6 +165,9 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 	@Transactional
 	public void persist(Document doc, InputStream inputStream)
 			throws IOException {
+
+		Assert.notNull(doc);
+		Assert.notNull(inputStream);
 
 		logger.info("Start persisting new document " + doc);
 
@@ -170,6 +187,8 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 	@Override
 	@Transactional
 	public void delete(Document doc) {
+
+		Assert.notNull(doc);
 
 		logger.debug("Start deleting document " + doc);
 		super.delete(doc);
