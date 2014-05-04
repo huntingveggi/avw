@@ -7,11 +7,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import de.mannheimer.imd.avw.api.MimeTypes;
 import de.mannheimer.imd.avw.api.model.Document;
 import de.mannheimer.imd.avw.api.model.DocumentContainer;
+import de.mannheimer.imd.avw.api.model.MimeType;
 
 @Entity
 @Table(name = "documents")
@@ -20,12 +21,12 @@ public class DocumentImpl extends HistoryImpl implements Document {
 
 	private int version = -1;
 	private DocumentContainer container;
-	String mimeType = "";
+	MimeType mimeType;
 
-	public DocumentImpl(MimeTypes mimetype) {
+	public DocumentImpl(MimeType mimetype) {
 
 		super();
-		this.mimeType = mimetype.toString();
+		this.mimeType = mimetype;
 	}
 
 	public DocumentImpl() {
@@ -59,13 +60,14 @@ public class DocumentImpl extends HistoryImpl implements Document {
 	}
 
 	@Override
-	@Column(name = "mimetype")
-	public String getMimeType() {
+	@OneToOne(cascade = { CascadeType.ALL }, optional = false, orphanRemoval = true, targetEntity = MimeTypeImpl.class)
+	@JoinColumn(name = "mimetype_id")
+	public MimeType getMimeType() {
 
 		return this.mimeType;
 	}
 
-	public void setMimeType(String mimetype) {
+	public void setMimeType(MimeType mimetype) {
 
 		this.mimeType = mimetype;
 	}
@@ -77,7 +79,9 @@ public class DocumentImpl extends HistoryImpl implements Document {
 		buf.append(getClass().getSimpleName());
 		buf.append("[");
 		buf.append("id=" + getId());
-		buf.append(", mimetype=" + getMimeType());
+		if (getMimeType() != null) {
+			buf.append(", mimetype=" + getMimeType().getMimeType());
+		}
 		buf.append(", version=" + getVersion());
 		if (getContainer() != null) {
 			buf.append(", containerId=" + getContainer().getId());

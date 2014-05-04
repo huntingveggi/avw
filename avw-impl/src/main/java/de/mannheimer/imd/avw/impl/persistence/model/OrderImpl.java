@@ -24,7 +24,7 @@ import de.mannheimer.imd.avw.api.model.Document;
 import de.mannheimer.imd.avw.api.model.Message;
 import de.mannheimer.imd.avw.api.model.Order;
 import de.mannheimer.imd.avw.api.model.State;
-import de.mannheimer.imd.avw.impl.ApplicatonContextHelper;
+import de.mannheimer.imd.avw.impl.context.ApplicatonContextHelper;
 
 @Entity
 @Table(name = "orders")

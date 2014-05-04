@@ -1,4 +1,4 @@
-package de.mannheimer.imd.avw.impl;
+package de.mannheimer.imd.avw.impl.context;
 
 import javax.inject.Named;
 

@@ -21,11 +21,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
-import de.mannheimer.imd.avw.api.MimeTypes;
 import de.mannheimer.imd.avw.api.model.Document;
+import de.mannheimer.imd.avw.api.model.MimeType;
 import de.mannheimer.imd.avw.api.model.Order;
 import de.mannheimer.imd.avw.api.persistence.DocumentDao;
 import de.mannheimer.imd.avw.api.persistence.OrderDao;
+import de.mannheimer.imd.avw.impl.persistence.MimeTypeFactory;
 import de.mannheimer.imd.avw.impl.persistence.OrderDaoImpl;
 
 /**
@@ -130,10 +131,13 @@ public class OrderDaoImplExecutionTest {
 		Order newOrder = orderDao.getNewInstance();
 		createdOrders.add(newOrder);
 
-		Document doc1 = documentDao.getNewInstance(MimeTypes.APPLICATION_PDF);
+		MimeType mimeType1 = MimeTypeFactory.getByExtension("pdf");
+
+		Document doc1 = documentDao.getNewInstance(mimeType1);
 		newOrder.getDocuments().add(doc1);
 
-		Document doc2 = documentDao.getNewInstance(MimeTypes.APPLICATION_PDF);
+		MimeType mimeType2 = MimeTypeFactory.getByExtension("pdf");
+		Document doc2 = documentDao.getNewInstance(mimeType2);
 		newOrder.getDocuments().add(doc2);
 
 		orderDao.persist(newOrder);

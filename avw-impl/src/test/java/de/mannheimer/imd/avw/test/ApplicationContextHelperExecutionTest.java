@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
-import de.mannheimer.imd.avw.impl.ApplicatonContextHelper;
+import de.mannheimer.imd.avw.impl.context.ApplicatonContextHelper;
 
 /**
  * @author Dennis Ahaus

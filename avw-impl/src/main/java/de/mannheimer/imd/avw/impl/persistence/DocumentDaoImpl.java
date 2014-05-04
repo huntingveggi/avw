@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -22,6 +23,7 @@ import de.ahaus.dennis.javautils.impl.helper.Assert;
 import de.mannheimer.imd.avw.api.MimeTypes;
 import de.mannheimer.imd.avw.api.model.Document;
 import de.mannheimer.imd.avw.api.model.DocumentContainer;
+import de.mannheimer.imd.avw.api.model.MimeType;
 import de.mannheimer.imd.avw.api.persistence.DocumentDao;
 import de.mannheimer.imd.avw.impl.persistence.model.DocumentContainerImpl;
 import de.mannheimer.imd.avw.impl.persistence.model.DocumentImpl;
@@ -75,12 +77,15 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 	}
 
 	@Override
-	public Document getNewInstance(MimeTypes mimetype) throws IOException {
+	public Document getNewInstance(MimeType mimetype) throws IOException {
 
 		Assert.notNull(mimetype);
 
 		DocumentImpl doc = new DocumentImpl(mimetype);
 		doc.setId(getGenerator().createUniqueId());
+		doc.setCreationDate(new Date());
+		doc.setLastChangeDate(new Date());
+		doc.setVersion(-1);
 
 		DocumentContainer container = getNewDocumentContainerInstance();
 		doc.setContainer(container);

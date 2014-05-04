@@ -11,7 +11,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import de.mannheimer.imd.avw.api.MimeTypes;
 import de.mannheimer.imd.avw.api.model.State;
 import de.mannheimer.imd.avw.impl.aspects.LoggingAspect;
 
@@ -43,17 +42,6 @@ public class MiscExecutionTest {
 			Assert.assertNotNull(state.getDescription());
 			Assert.assertTrue(state.getDescription().length() > 10);
 		}
-
-	}
-
-	@Test
-	public void testMimeTypesAPPLICATION_PDF() {
-
-		String pdfExtension = MimeTypes.APPLICATION_PDF.getExtension();
-		Assert.assertTrue(pdfExtension.equalsIgnoreCase("pdf"));
-
-		String toString = MimeTypes.APPLICATION_PDF.toString();
-		Assert.assertTrue(toString.equalsIgnoreCase("application/pdf"));
 
 	}
 

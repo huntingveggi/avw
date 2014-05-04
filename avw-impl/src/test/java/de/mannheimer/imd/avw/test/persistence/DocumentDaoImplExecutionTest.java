@@ -26,14 +26,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
-import de.ahaus.dennis.javautils.impl.junit.annotations.ClassUnderTest;
 import de.mannheimer.imd.avw.api.IdGenerator;
-import de.mannheimer.imd.avw.api.MimeTypes;
 import de.mannheimer.imd.avw.api.model.Document;
 import de.mannheimer.imd.avw.api.model.DocumentContainer;
+import de.mannheimer.imd.avw.api.model.MimeType;
 import de.mannheimer.imd.avw.api.persistence.DocumentDao;
 import de.mannheimer.imd.avw.impl.IdGeneratorImpl;
-import de.mannheimer.imd.avw.impl.persistence.DocumentDaoImpl;
+import de.mannheimer.imd.avw.impl.persistence.MimeTypeFactory;
 import de.mannheimer.imd.avw.test.mockup.DocumentDaoImplMock;
 
 /**
@@ -88,7 +87,8 @@ public class DocumentDaoImplExecutionTest {
 
 		assertNotNull(currentDocumentInputStream);
 
-		currentDocument = documentDao.getNewInstance(MimeTypes.APPLICATION_PDF);
+		MimeType mimeType = MimeTypeFactory.getByExtension("pdf");
+		currentDocument = documentDao.getNewInstance(mimeType);
 
 		assertNotNull(currentDocument);
 
@@ -186,7 +186,8 @@ public class DocumentDaoImplExecutionTest {
 	@Test
 	public void testGetNewValidInstance() throws IOException {
 
-		Document doc = documentDao.getNewInstance(MimeTypes.APPLICATION_PDF);
+		MimeType mimeType = MimeTypeFactory.getByExtension("pdf");
+		Document doc = documentDao.getNewInstance(mimeType);
 		assertNotNull(doc);
 		assertNotNull(doc.getId());
 		assertNotNull(doc.getContainer());

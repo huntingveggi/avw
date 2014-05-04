@@ -27,12 +27,12 @@
 				<beans:entry key="rss" value="application/rss+xml" />
 			</beans:map>
 		</beans:property>
-		<beans:property name="ignoreAcceptHeader" value="true" />
+		<beans:property name="ignoreAcceptHeader" value="true"></beans:property>
 		<beans:property name="defaultViews">
 			<beans:list>
 				<!-- JSON View -->
 				<beans:bean
-					class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
+					class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
 				</beans:bean>
 			</beans:list>
 		</beans:property>
@@ -44,7 +44,7 @@
 		in the /WEB-INF/views directory -->
 	<beans:bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="prefix" value="/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 
