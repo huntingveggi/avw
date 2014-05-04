@@ -13,8 +13,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.springframework.context.ApplicationContext;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import de.ahaus.dennis.javautils.impl.helper.Assert;
 import de.mannheimer.imd.avw.api.model.Document;
@@ -123,6 +126,8 @@ public class OrderImpl extends HistoryImpl implements Order {
 	}
 
 	@Transient
+	@XmlTransient
+	@JsonIgnore
 	public ApplicationContext getContext() {
 
 		if (this.context == null) {

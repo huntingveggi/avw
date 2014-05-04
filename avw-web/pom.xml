@@ -6,7 +6,6 @@
 	<name>avw-web</name>
 	<packaging>war</packaging>
 	<properties>
-		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<jackson.version>1.9.10</jackson.version>
 	</properties>
 	<parent>
@@ -30,11 +29,7 @@
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
-			<version>${org.aspectj-version}</version>
 		</dependency>
-
-
-
 
 
 		<!-- @Inject -->
@@ -75,6 +70,14 @@
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-jaxb-annotations</artifactId>
+			<version>2.3.3</version>
+		</dependency>
+
+
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>avw-api</artifactId>
