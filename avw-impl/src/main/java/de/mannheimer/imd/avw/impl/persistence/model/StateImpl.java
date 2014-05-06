@@ -3,8 +3,16 @@ package de.mannheimer.imd.avw.impl.persistence.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import de.mannheimer.imd.avw.api.model.State;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public class StateImpl implements State {
 
 	private String name;
@@ -13,6 +21,7 @@ public class StateImpl implements State {
 	private List<State> allowedForwardStates = new ArrayList<State>();
 
 	@Override
+	@XmlAttribute
 	public String getName() {
 
 		return name;
@@ -24,6 +33,7 @@ public class StateImpl implements State {
 	}
 
 	@Override
+	@XmlElement
 	public String getDescription() {
 
 		return description;

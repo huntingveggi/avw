@@ -13,11 +13,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.springframework.context.ApplicationContext;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 import de.ahaus.dennis.javautils.impl.helper.Assert;
 import de.mannheimer.imd.avw.api.model.Document;
@@ -29,6 +36,8 @@ import de.mannheimer.imd.avw.impl.context.ApplicatonContextHelper;
 @Entity
 @Table(name = "orders")
 @Access(AccessType.PROPERTY)
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public class OrderImpl extends HistoryImpl implements Order {
 
 	private List<Document> documents = new ArrayList<Document>();
@@ -39,6 +48,7 @@ public class OrderImpl extends HistoryImpl implements Order {
 
 	@Override
 	@Column(name = "comment")
+	@XmlElement
 	public String getComment() {
 
 		return comment;
@@ -47,6 +57,8 @@ public class OrderImpl extends HistoryImpl implements Order {
 	@Override
 	@OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = false, fetch = FetchType.LAZY, targetEntity = DocumentImpl.class)
 	@JoinColumn(name = "document_id")
+	@XmlElementWrapper(name = "documents")
+	@XmlElement(name = "document", type = DocumentImpl.class)
 	public List<Document> getDocuments() {
 
 		return documents;
@@ -62,6 +74,7 @@ public class OrderImpl extends HistoryImpl implements Order {
 
 	@Override
 	@Transient
+	@XmlTransient
 	public List<Message> getMessages() {
 
 		return messages;
@@ -77,6 +90,8 @@ public class OrderImpl extends HistoryImpl implements Order {
 
 	@Override
 	@Transient
+	@XmlElement(name = "state", type = StateImpl.class)
+	@JsonTypeInfo(use = Id.CLASS, defaultImpl = StateImpl.class)
 	public State getState() {
 
 		return state;

@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,11 +27,8 @@ public class DocumentController {
 
 	Document currentDocument;
 
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
 	@RequestMapping(value = "/create/{extension}", method = RequestMethod.GET)
-	public  Document create(@PathVariable String extension) {
+	public String create(@PathVariable String extension, ModelMap model) {
 
 		MimeType type = MimeTypeFactory.getByExtension(extension);
 
@@ -40,8 +38,9 @@ public class DocumentController {
 		}
 
 		currentDocument = documentDao.getNewInstance(type);
+		model.addAttribute("model", currentDocument);
 
-		return currentDocument;
+		return "doc";
 
 	}
 }

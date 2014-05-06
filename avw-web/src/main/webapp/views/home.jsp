@@ -13,16 +13,7 @@
 </head>
 <body>
 
-	<div ng-controller="HomeController">
-
-		<div id="header" ng-include="header"></div>
-
-		<div id="content" ng-include="content"></div>
-
-		<div id="footer" ng-include="footer"></div>
-
-
-	</div>
+	<div ng-controller="HomeController">HOME</div>
 </body>
 
 </html>
