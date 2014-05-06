@@ -45,7 +45,7 @@ import de.mannheimer.imd.avw.test.mockup.DocumentDaoImplMock;
  * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/META-INF/avw-impl/spring/*-context.xml" })
+@ContextConfiguration(locations = { "/META-INF/avw-impl/spring/context.xml" })
 @TransactionConfiguration(defaultRollback = true)
 public class DocumentDaoImplExecutionTest {
 

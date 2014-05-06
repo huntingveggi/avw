@@ -27,7 +27,7 @@
 
 	<bean
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location" value="/datasource.properties" />
+		<property name="location" value="/META-INF/datasource.properties" />
 	</bean>
 
 	<bean id="dataSource"
