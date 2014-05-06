@@ -77,7 +77,7 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 	}
 
 	@Override
-	public Document getNewInstance(MimeType mimetype) throws IOException {
+	public Document getNewInstance(MimeType mimetype) {
 
 		Assert.notNull(mimetype);
 

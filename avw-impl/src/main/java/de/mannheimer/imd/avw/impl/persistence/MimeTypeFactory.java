@@ -14,7 +14,6 @@ public abstract class MimeTypeFactory {
 
 		for (MimeType mt : mimetypes) {
 			if (mt.getMimeType().equalsIgnoreCase(mimeType)) {
-				mt.s
 				return mt;
 			}
 		}

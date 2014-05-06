@@ -19,7 +19,7 @@ import de.mannheimer.imd.avw.impl.aspects.LoggingAspect;
  * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/META-INF/avw-impl/*-context.xml" })
+@ContextConfiguration(locations = { "/META-INF/avw-impl/spring/*-context.xml" })
 public class MiscExecutionTest {
 
 	@Inject

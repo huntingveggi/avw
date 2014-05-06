@@ -1,4 +1,4 @@
-package de.mannheimer.imd;
+package de.mannheimer.imd.avw.web;
 
 import java.text.DateFormat;
 import java.util.Date;

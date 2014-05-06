@@ -17,7 +17,7 @@ import de.mannheimer.imd.avw.impl.context.ApplicatonContextHelper;
  * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/META-INF/avw-impl/*-context.xml" })
+@ContextConfiguration(locations = { "/META-INF/avw-impl/spring/*-context.xml" })
 @TransactionConfiguration(defaultRollback = true)
 public class ApplicationContextHelperExecutionTest {
 
