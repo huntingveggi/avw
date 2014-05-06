@@ -1,15 +1,17 @@
 package de.mannheimer.imd.avw.impl.context;
 
-import javax.inject.Named;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import de.ahaus.dennis.javautils.impl.helper.Assert;
 
-@Named
 public class ApplicatonContextHelper implements ApplicationContextAware {
+
+	static final Logger logger = LoggerFactory
+			.getLogger(ApplicatonContextHelper.class);
 
 	private static ApplicationContext context;
 
@@ -18,6 +20,7 @@ public class ApplicatonContextHelper implements ApplicationContextAware {
 			throws BeansException {
 
 		setContext(applicationContext);
+		logger.debug("Set static application context to " + applicationContext);
 
 	}
 

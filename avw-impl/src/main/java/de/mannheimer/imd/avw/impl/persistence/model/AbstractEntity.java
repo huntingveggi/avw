@@ -3,6 +3,7 @@ package de.mannheimer.imd.avw.impl.persistence.model;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @MappedSuperclass
 public abstract class AbstractEntity {

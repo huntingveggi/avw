@@ -10,11 +10,11 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-	<import resource="mimetypes.xml"/>
+	<import resource="mimetypes.xml" />
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
-	<aop:aspectj-autoproxy />
+	<!-- <aop:aspectj-autoproxy />  -->
 
 	<context:component-scan base-package="de.mannheimer.imd" />
 
@@ -61,6 +61,8 @@
 		<property name="name" value="initial" />
 		<property name="description" value="initial state" />
 	</bean>
+
+	<bean class="de.mannheimer.imd.avw.impl.context.ApplicatonContextHelper"></bean>
 
 
 

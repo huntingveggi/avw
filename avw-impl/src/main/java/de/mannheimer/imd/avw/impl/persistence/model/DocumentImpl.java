@@ -9,6 +9,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import de.mannheimer.imd.avw.api.model.Document;
 import de.mannheimer.imd.avw.api.model.DocumentContainer;
@@ -17,6 +21,8 @@ import de.mannheimer.imd.avw.api.model.MimeType;
 @Entity
 @Table(name = "documents")
 @Access(AccessType.PROPERTY)
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public class DocumentImpl extends HistoryImpl implements Document {
 
 	private int version = -1;
@@ -36,6 +42,7 @@ public class DocumentImpl extends HistoryImpl implements Document {
 	@Override
 	@ManyToOne(optional = true, cascade = { CascadeType.ALL }, targetEntity = DocumentContainerImpl.class)
 	@JoinColumn(name = "container_id")
+	@XmlElement(name = "container", type = DocumentContainerImpl.class)
 	public DocumentContainer getContainer() {
 
 		return container;
@@ -62,6 +69,7 @@ public class DocumentImpl extends HistoryImpl implements Document {
 	@Override
 	@OneToOne(cascade = { CascadeType.ALL }, optional = false, orphanRemoval = true, targetEntity = MimeTypeImpl.class)
 	@JoinColumn(name = "mimetype_id")
+	@XmlElement(name = "mimeType", type = MimeTypeImpl.class)
 	public MimeType getMimeType() {
 
 		return this.mimeType;

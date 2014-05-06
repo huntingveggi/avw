@@ -34,6 +34,20 @@
 				<beans:bean
 					class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
 				</beans:bean>
+
+				<!-- JAXB XML View -->
+				<beans:bean
+					class="org.springframework.web.servlet.view.xml.MarshallingView">
+					<beans:constructor-arg>
+						<beans:bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+							<beans:property name="packagesToScan">
+								<beans:array>
+									<beans:value>de.mannheimer</beans:value>
+								</beans:array>
+							</beans:property>
+						</beans:bean>
+					</beans:constructor-arg>
+				</beans:bean>
 			</beans:list>
 		</beans:property>
 	</beans:bean>
@@ -44,6 +58,7 @@
 		in the /WEB-INF/views directory -->
 	<beans:bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="order" value="2"></beans:property>
 		<beans:property name="prefix" value="/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>

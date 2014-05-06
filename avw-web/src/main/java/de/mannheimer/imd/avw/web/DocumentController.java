@@ -30,13 +30,13 @@ public class DocumentController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/create/{extension}", method = RequestMethod.GET)
-	public Document create(@PathVariable String extension) {
+	public  Document create(@PathVariable String extension) {
 
 		MimeType type = MimeTypeFactory.getByExtension(extension);
 
 		if (type == null) {
-			throw new RuntimeException("No mimetype found for extension "
-					+ extension);
+			throw new RuntimeException("No mimetype found for extension \""
+					+ extension + "\"");
 		}
 
 		currentDocument = documentDao.getNewInstance(type);

@@ -2,15 +2,22 @@ package de.mannheimer.imd.avw.impl.persistence;
 
 import java.util.Collection;
 
+import org.slf4j.Logger;
+
 import de.mannheimer.imd.avw.api.model.MimeType;
 import de.mannheimer.imd.avw.impl.context.ApplicatonContextHelper;
 
 public abstract class MimeTypeFactory {
 
+	static Logger logger = org.slf4j.LoggerFactory
+			.getLogger(MimeTypeFactory.class);
+
 	public static MimeType getByMimeType(String mimeType) {
 
 		Collection<MimeType> mimetypes = ApplicatonContextHelper.getContext()
 				.getBeansOfType(MimeType.class).values();
+
+		logger.debug("Found mimetypes: " + mimetypes.toString());
 
 		for (MimeType mt : mimetypes) {
 			if (mt.getMimeType().equalsIgnoreCase(mimeType)) {
@@ -25,6 +32,8 @@ public abstract class MimeTypeFactory {
 
 		Collection<MimeType> mimetypes = ApplicatonContextHelper.getContext()
 				.getBeansOfType(MimeType.class).values();
+
+		logger.debug("Found mimetypes: " + mimetypes.toString());
 
 		for (MimeType mt : mimetypes) {
 			if (mt.getExtension().equalsIgnoreCase(extension)) {

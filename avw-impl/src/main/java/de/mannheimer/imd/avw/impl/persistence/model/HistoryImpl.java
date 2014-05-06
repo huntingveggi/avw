@@ -6,10 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import de.mannheimer.imd.avw.api.model.History;
 
 @MappedSuperclass
+@XmlRootElement
 public abstract class HistoryImpl extends AbstractEntity implements History {
 
 	private Date creationDate = null;
@@ -20,6 +22,7 @@ public abstract class HistoryImpl extends AbstractEntity implements History {
 	@Override
 	@Column(name = "created_by_user")
 	public String getCreatedBy() {
+
 		return createdByUser;
 	}
 
@@ -27,6 +30,7 @@ public abstract class HistoryImpl extends AbstractEntity implements History {
 	@Column(name = "creation_date")
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date getCreationDate() {
+
 		if (creationDate == null) {
 			creationDate = new Date();
 		}
@@ -36,6 +40,7 @@ public abstract class HistoryImpl extends AbstractEntity implements History {
 	@Override
 	@Column(name = "last_change_by_user")
 	public String getLastChangeBy() {
+
 		return lastChangeByUser;
 	}
 
@@ -43,6 +48,7 @@ public abstract class HistoryImpl extends AbstractEntity implements History {
 	@Column(name = "last_change_date")
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date getLastChangeDate() {
+
 		if (lastChangeDate == null) {
 			lastChangeDate = new Date();
 		}
@@ -57,20 +63,24 @@ public abstract class HistoryImpl extends AbstractEntity implements History {
 	 */
 	@Override
 	public void setCreatedBy(String createdByUser) {
+
 		this.createdByUser = createdByUser;
 	}
 
 	public void setCreationDate(Date creationDate) {
+
 		this.creationDate = creationDate;
 	}
 
 	@Override
 	public void setLastChangeBy(String user) {
+
 		lastChangeByUser = user;
 	}
 
 	@Override
 	public void setLastChangeDate(Date date) {
+
 		lastChangeDate = date;
 	}
 
