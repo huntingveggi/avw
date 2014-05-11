@@ -1,5 +1,7 @@
 package de.mannheimer.imd.avw.web;
 
+import java.util.Collection;
+
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -14,6 +16,9 @@ import de.mannheimer.imd.avw.api.model.Document;
 import de.mannheimer.imd.avw.api.model.MimeType;
 import de.mannheimer.imd.avw.api.persistence.DocumentDao;
 import de.mannheimer.imd.avw.impl.persistence.MimeTypeFactory;
+import de.mannheimer.imd.avw.web.impl.MimeTypeWrapper;
+import de.mannheimer.imd.avw.web.impl.ResponseMessage;
+import de.mannheimer.imd.avw.web.impl.ResponseMessageFactory;
 
 @Controller
 @RequestMapping(value = "/documents")
@@ -41,6 +46,20 @@ public class DocumentController {
 		model.addAttribute("model", currentDocument);
 
 		return "doc";
+
+	}
+
+	@RequestMapping(value = "/extensions", method = RequestMethod.GET)
+	public String extensions(ModelMap model) {
+
+		Collection<MimeType> types = MimeTypeFactory.getAvailableMimeTypes();
+
+		ResponseMessage response = ResponseMessageFactory
+				.createResponseMessage(new MimeTypeWrapper(types));
+
+		model.addAttribute(response);
+
+		return "mimetypes";
 
 	}
 }

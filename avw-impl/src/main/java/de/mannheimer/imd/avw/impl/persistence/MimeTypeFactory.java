@@ -14,8 +14,7 @@ public abstract class MimeTypeFactory {
 
 	public static MimeType getByMimeType(String mimeType) {
 
-		Collection<MimeType> mimetypes = ApplicatonContextHelper.getContext()
-				.getBeansOfType(MimeType.class).values();
+		Collection<MimeType> mimetypes = getAvailableMimeTypes();
 
 		logger.debug("Found mimetypes: " + mimetypes.toString());
 
@@ -30,8 +29,7 @@ public abstract class MimeTypeFactory {
 
 	public static MimeType getByExtension(String extension) {
 
-		Collection<MimeType> mimetypes = ApplicatonContextHelper.getContext()
-				.getBeansOfType(MimeType.class).values();
+		Collection<MimeType> mimetypes = getAvailableMimeTypes();
 
 		logger.debug("Found mimetypes: " + mimetypes.toString());
 
@@ -41,6 +39,15 @@ public abstract class MimeTypeFactory {
 			}
 		}
 		return null;
+
+	}
+
+	public static Collection<MimeType> getAvailableMimeTypes() {
+
+		Collection<MimeType> mimetypes = ApplicatonContextHelper.getContext()
+				.getBeansOfType(MimeType.class).values();
+
+		return mimetypes;
 
 	}
 }
