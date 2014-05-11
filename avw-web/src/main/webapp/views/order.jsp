@@ -5,11 +5,22 @@
 <head>
 <%@include file="default.jsp"%>
 
-<title>Order </title>
+<title>Order</title>
 
 </head>
 <body>
 <body ng-controller="OrderController">
-	{{currentOrder.id}}
-	<button ng-click="updateOrder(currentOrder)">update</button>
+
+	<table>
+		<tr>
+			<td>ID</td>
+			<td>:</td>
+			<td>{{currentOrder.id}}</td>
+		</tr>
+		<tr>
+			<td>Comment</td>
+			<td>:</td>
+			<td>{{currentOrder.comment}}</td>
+		</tr>
+	</table>
 </html>

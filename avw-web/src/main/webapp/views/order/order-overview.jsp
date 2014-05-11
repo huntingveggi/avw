@@ -15,8 +15,11 @@
 		<li ng-repeat="order in orders | orderBy:'id'">
 			<table>
 				<tr>
-					<td>{{order.id}}</td>
-					<td>Comment: <input ng-model="order.comment"></td>
+					<td><a href="/avw-web/orders/{{order.id}}">{{order.id}}</a></td>
+					<td>
+					<br>Comment: <input ng-model="order.comment">
+					
+					</td>
 					<td><button ng-click="deleteOrder(order)">delete</button></td>
 					<td><button ng-click="updateOrder(order)">update</button></td>
 				<tr>

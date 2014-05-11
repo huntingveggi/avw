@@ -12,11 +12,13 @@ avwControllers.controller('HomeController', function($scope, $http) {
 
 avwControllers.controller('OrderController', function($scope, $http) {
 
-	$scope.currentOrder = function() {
-		$http.get(baseUrl + "/orders/current.json").success(function(result) {
-			$scope.currentOrder = result.order;
-		}).error(function(result) {
-			console.log(result);
+	$scope.findById = function(id) {
+		$http.get(baseUrl + "/orders/" + id + ".json").success(
+				function(result) {
+					$scope.currentOrder = result.order;
+					LOG(result);
+				}).error(function(result) {
+			LOG(result);
 		});
 	};
 
@@ -62,7 +64,10 @@ avwControllers.controller('OrderController', function($scope, $http) {
 		});
 	};
 
-	$scope.currentOrder();
 	$scope.findAll();
 
 });
+
+function LOG(object) {
+	Console.log(object);
+}

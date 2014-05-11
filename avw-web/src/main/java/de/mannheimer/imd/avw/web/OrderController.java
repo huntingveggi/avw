@@ -18,6 +18,8 @@ import de.mannheimer.imd.avw.api.model.Order;
 import de.mannheimer.imd.avw.api.persistence.OrderDao;
 import de.mannheimer.imd.avw.impl.persistence.model.OrderImpl;
 import de.mannheimer.imd.avw.web.impl.OrderWrapper;
+import de.mannheimer.imd.avw.web.impl.ResponseMessage;
+import de.mannheimer.imd.avw.web.impl.ResponseMessageFactory;
 
 @Controller
 @RequestMapping(value = "/orders")
@@ -57,6 +59,20 @@ public class OrderController {
 
 	}
 
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public String orderById(@PathVariable String id, ModelMap model) {
+
+		Order order = orderDao.findById(id);
+
+		ResponseMessage response = ResponseMessageFactory
+				.createResponseMessage(order);
+
+		model.addAttribute(response);
+
+		return "order";
+
+	}
+
 	@RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
 	public String delete(@PathVariable String id, ModelMap model) {
 
@@ -91,7 +107,7 @@ public class OrderController {
 	public String update(@RequestBody OrderImpl order, ModelMap model) {
 
 		orderDao.update(order);
-		
+
 		model.addAttribute("order", order);
 
 		logger.info(order.toString());
