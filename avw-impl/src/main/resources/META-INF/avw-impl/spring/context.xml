@@ -55,6 +55,7 @@
 			</props>
 		</property>
 	</bean>
+	
 
 
 	<bean id="initial" class="de.mannheimer.imd.avw.impl.persistence.model.StateImpl">

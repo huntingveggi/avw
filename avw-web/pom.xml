@@ -84,17 +84,6 @@
 			<version>2.3.3</version>
 		</dependency>
 
-
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>avw-api</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>avw-impl</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>de.mannheimer.imd.avw</groupId>
 			<artifactId>avw-api</artifactId>

@@ -32,6 +32,7 @@ public abstract class AbstractDao<T> implements CrudDao<T>,
 
 	Logger logger = LoggerFactory.getLogger(AbstractDao.class);
 
+	@Inject
 	private ApplicationContext context;
 
 	@Inject
@@ -61,6 +62,7 @@ public abstract class AbstractDao<T> implements CrudDao<T>,
 		Criteria crit = session.createCriteria(clazz);
 		@SuppressWarnings("unchecked")
 		List<T> result = crit.list();
+		doLazyInitialize(result);
 		return new ArrayList<>(result);
 	}
 
@@ -80,11 +82,15 @@ public abstract class AbstractDao<T> implements CrudDao<T>,
 		Criteria crit = session.createCriteria(clazz);
 		@SuppressWarnings("unchecked")
 		T result = (T) crit.add(Restrictions.eq("id", id)).uniqueResult();
+		doLazyInitialize(result);
 		return result;
 	}
 
 	protected SessionFactory getSessionfactory() {
 
+		if (this.sessionfactory == null) {
+			this.sessionfactory = context.getBean(SessionFactory.class);
+		}
 		return sessionfactory;
 	}
 
@@ -144,6 +150,15 @@ public abstract class AbstractDao<T> implements CrudDao<T>,
 	public ApplicationContext getContext() {
 
 		return context;
+	}
+
+	public abstract void doLazyInitialize(T object);
+
+	public void doLazyInitialize(List<T> objects) {
+
+		for (T obj : objects) {
+			doLazyInitialize(obj);
+		}
 	}
 
 }

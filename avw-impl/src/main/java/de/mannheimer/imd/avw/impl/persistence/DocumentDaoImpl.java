@@ -182,4 +182,13 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 		this.deletePhysical(doc);
 	}
 
+	@Override
+	public void doLazyInitialize(Document doc) {
+
+		if (doc != null) {
+			doc.getContainer().getId();
+			doc.getMimeType().getExtension();
+		}
+	}
+
 }
