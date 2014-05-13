@@ -9,4 +9,6 @@ public interface DocumentContainerDao {
 
 	List<Document> findBy(DocumentContainer container);
 
+	List<DocumentContainer> findByName(String name);
+
 }

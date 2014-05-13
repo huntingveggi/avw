@@ -77,7 +77,7 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 	}
 
 	@Override
-	public Document getNewInstance(MimeType mimetype) {
+	public Document getNewInstance(MimeType mimetype, String containerName) {
 
 		Assert.notNull(mimetype);
 
@@ -87,7 +87,7 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 		doc.setLastChangeDate(new Date());
 		doc.setVersion(-1);
 
-		DocumentContainer container = getNewDocumentContainerInstance();
+		DocumentContainer container = getDocumentContainerInstance(containerName);
 		doc.setContainer(container);
 
 		return doc;
@@ -96,11 +96,16 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 	/**
 	 * @return
 	 */
-	protected DocumentContainer getNewDocumentContainerInstance() {
+	protected DocumentContainer getDocumentContainerInstance(String name) {
 
-		DocumentContainerImpl container = new DocumentContainerImpl();
-		container.setId(getGenerator().createUniqueId());
-		return container;
+		DocumentContainer container = findSingleByName(name);
+		if (container != null) {
+			return container;
+		}
+		DocumentContainerImpl newContainer = new DocumentContainerImpl();
+		newContainer.setId(getGenerator().createUniqueId());
+		newContainer.setName(name);
+		return newContainer;
 	}
 
 	protected void deletePhysical(Document doc) {
@@ -183,12 +188,33 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 	}
 
 	@Override
+	@javax.transaction.Transactional
 	public void doLazyInitialize(Document doc) {
 
 		if (doc != null) {
 			doc.getContainer().getId();
 			doc.getMimeType().getExtension();
 		}
+	}
+
+	@Override
+	@javax.transaction.Transactional
+	public List<DocumentContainer> findByName(String name) {
+
+		List<DocumentContainer> containers = super.findByProperty("name", name,
+				DocumentContainer.class);
+		return containers;
+
+	}
+
+	@javax.transaction.Transactional
+	public DocumentContainer findSingleByName(String name) {
+
+		List<DocumentContainer> containers = findByName(name);
+		if (!containers.isEmpty()) {
+			return containers.iterator().next();
+		}
+		return null;
 	}
 
 }

@@ -86,6 +86,20 @@ public abstract class AbstractDao<T> implements CrudDao<T>,
 		return result;
 	}
 
+	@javax.transaction.Transactional
+	protected <X> List<X> findByProperty(String propertyName, Object value,
+			Class<? extends X> clazz) {
+
+		Assert.notNull(propertyName);
+		Assert.notNull(value);
+
+		Session session = getSessionfactory().getCurrentSession();
+		Criteria crit = session.createCriteria(clazz);
+		@SuppressWarnings("unchecked")
+		List<X> result = crit.add(Restrictions.eq(propertyName, value)).list();
+		return new ArrayList<X>(result);
+	}
+
 	protected SessionFactory getSessionfactory() {
 
 		if (this.sessionfactory == null) {

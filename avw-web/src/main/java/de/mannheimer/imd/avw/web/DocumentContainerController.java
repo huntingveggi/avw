@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import de.mannheimer.imd.avw.api.model.Document;
+import de.mannheimer.imd.avw.api.model.DocumentContainer;
 import de.mannheimer.imd.avw.api.model.MimeType;
+import de.mannheimer.imd.avw.api.persistence.DocumentContainerDao;
 import de.mannheimer.imd.avw.api.persistence.DocumentDao;
 import de.mannheimer.imd.avw.impl.persistence.MimeTypeFactory;
 import de.mannheimer.imd.avw.web.impl.MimeTypeWrapper;
@@ -23,38 +24,29 @@ import de.mannheimer.imd.avw.web.impl.ResponseMessage;
 import de.mannheimer.imd.avw.web.impl.ResponseMessageFactory;
 
 @Controller
-@RequestMapping(value = "/documents")
-public class DocumentController {
+@RequestMapping(value = "/container")
+public class DocumentContainerController {
 
 	static final Logger logger = LoggerFactory
-			.getLogger(DocumentController.class);
+			.getLogger(DocumentContainerController.class);
 
 	@Inject
 	DocumentDao documentDao;
 
+	@Inject
+	DocumentContainerDao containerDao;
+
+	DocumentContainer currentContainer;
 	Document currentDocument;
 
-	@RequestMapping(value = "/create/{extension}/{containerName}", method = RequestMethod.GET)
-	@Transactional
-	public String create(@PathVariable String extension,
-			@PathVariable String containerName, ModelMap model) {
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public String create(@PathVariable String extension, ModelMap model) {
 
-		MimeType type = MimeTypeFactory.getByExtension(extension);
-
-		if (type == null) {
-			throw new RuntimeException("No mimetype found for extension \""
-					+ extension + "\"");
-		}
-
-		currentDocument = documentDao.getNewInstance(type, containerName);
-		model.addAttribute("model", currentDocument);
-
-		return "doc";
+		return "containers/create";
 
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	@Transactional
 	public String find(ModelMap model) {
 
 		List<Document> docs = documentDao.findAll();
@@ -63,7 +55,7 @@ public class DocumentController {
 		responseMessage.setModel(docs);
 		model.addAttribute(responseMessage);
 
-		return "/documents/overview";
+		return "/containers/overview";
 
 	}
 

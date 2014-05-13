@@ -10,7 +10,7 @@ public interface DocumentDao extends CrudDao<Document>, DocumentContainerDao {
 
 	void persist(Document doc, InputStream stream) throws IOException;
 
-	public Document getNewInstance(MimeType mimetype);
+	public Document getNewInstance(MimeType mimetype, String containerName);
 
 	InputStream findStream(Document doc) throws IOException;
 
