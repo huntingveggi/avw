@@ -6,7 +6,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import de.ahaus.dennis.javautils.impl.helper.Assert;
+import de.mannheimer.imd.avw.api.commons.Assert;
 
 public class ApplicatonContextHelper implements ApplicationContextAware {
 
