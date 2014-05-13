@@ -17,8 +17,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Repository;
 
-import de.ahaus.dennis.javautils.impl.helper.Assert;
 import de.mannheimer.imd.avw.api.IdGenerator;
+import de.mannheimer.imd.avw.api.commons.Assert;
 import de.mannheimer.imd.avw.api.persistence.CrudDao;
 
 /**
