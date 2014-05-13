@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.persistence.Transient;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -11,8 +12,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Repository;
 
+import de.ahaus.dennis.javautils.impl.helper.Assert;
 import de.mannheimer.imd.avw.api.IdGenerator;
 import de.mannheimer.imd.avw.api.persistence.CrudDao;
 
@@ -22,9 +27,13 @@ import de.mannheimer.imd.avw.api.persistence.CrudDao;
  * @param <T>
  */
 @Repository
-public abstract class AbstractDao<T> implements CrudDao<T> {
+public abstract class AbstractDao<T> implements CrudDao<T>,
+		ApplicationContextAware {
 
 	Logger logger = LoggerFactory.getLogger(AbstractDao.class);
+
+	@Inject
+	private ApplicationContext context;
 
 	@Inject
 	SessionFactory sessionfactory;
@@ -53,18 +62,8 @@ public abstract class AbstractDao<T> implements CrudDao<T> {
 		Criteria crit = session.createCriteria(clazz);
 		@SuppressWarnings("unchecked")
 		List<T> result = crit.list();
+		doLazyInitialize(result);
 		return new ArrayList<>(result);
-	}
-
-	/**
-	 * @param id
-	 * @param clazz
-	 * @return
-	 */
-	@javax.transaction.Transactional
-	protected T findById(int id, Class<? extends T> clazz) {
-
-		return this.findById("" + id);
 	}
 
 	/**
@@ -75,21 +74,30 @@ public abstract class AbstractDao<T> implements CrudDao<T> {
 	@javax.transaction.Transactional
 	protected T findById(String id, Class<? extends T> clazz) {
 
+		if (id == null) {
+			throw new IllegalArgumentException(
+					"Execption while try to find an entity: Identifier is null");
+		}
 		Session session = getSessionfactory().getCurrentSession();
 		Criteria crit = session.createCriteria(clazz);
 		@SuppressWarnings("unchecked")
 		T result = (T) crit.add(Restrictions.eq("id", id)).uniqueResult();
+		doLazyInitialize(result);
 		return result;
 	}
 
 	protected SessionFactory getSessionfactory() {
 
+		if (this.sessionfactory == null) {
+			this.sessionfactory = context.getBean(SessionFactory.class);
+		}
 		return sessionfactory;
 	}
 
 	@Override
 	@javax.transaction.Transactional
 	public void persist(T obj) {
+
 		if (obj == null) {
 			throw new IllegalArgumentException("Can not persist a NULL object!");
 		}
@@ -103,6 +111,8 @@ public abstract class AbstractDao<T> implements CrudDao<T> {
 	}
 
 	protected void setSessionfactory(SessionFactory sessionfactory) {
+
+		Assert.notNull(sessionfactory);
 
 		this.sessionfactory = sessionfactory;
 	}
@@ -123,7 +133,32 @@ public abstract class AbstractDao<T> implements CrudDao<T> {
 
 	protected void setGenerator(IdGenerator generator) {
 
+		Assert.notNull(generator);
+
 		this.generator = generator;
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext ctx)
+			throws BeansException {
+
+		this.context = ctx;
+
+	}
+
+	@Transient
+	public ApplicationContext getContext() {
+
+		return context;
+	}
+
+	public abstract void doLazyInitialize(T object);
+
+	public void doLazyInitialize(List<T> objects) {
+
+		for (T obj : objects) {
+			doLazyInitialize(obj);
+		}
 	}
 
 }

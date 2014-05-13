@@ -8,6 +8,6 @@ public interface Document extends Entity, History {
 
 	public void setContainer(DocumentContainer container);
 
-	public abstract String getMimeType();
+	public abstract MimeType getMimeType();
 
 }

@@ -32,6 +32,14 @@
 					<showDeprecation>true</showDeprecation>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<configuration>
+					<aggregate>true</aggregate>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 	<dependencyManagement>
@@ -94,6 +102,13 @@
 
 			<dependency>
 				<groupId>org.springframework</groupId>
+				<artifactId>spring-oxm</artifactId>
+				<version>${spring.framework.version}</version>
+			</dependency>
+
+
+			<dependency>
+				<groupId>org.springframework</groupId>
 				<artifactId>spring-context-support</artifactId>
 				<version>${spring.framework.version}</version>
 				<exclusions>
@@ -128,12 +143,21 @@
 				<version>${project.version}</version>
 				<artifactId>avw-web</artifactId>
 			</dependency>
+			<dependency>
+				<groupId>de.ahaus.dennis</groupId>
+				<artifactId>java-utils</artifactId>
+				<version>0.1-SNAPSHOT</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.ahaus.dennis</groupId>
+			<artifactId>java-utils</artifactId>
 		</dependency>
 	</dependencies>
 
