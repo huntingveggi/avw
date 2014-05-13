@@ -19,8 +19,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
-import de.ahaus.dennis.javautils.impl.helper.Assert;
 import de.mannheimer.imd.avw.api.MimeTypes;
+import de.mannheimer.imd.avw.api.commons.Assert;
 import de.mannheimer.imd.avw.api.model.Document;
 import de.mannheimer.imd.avw.api.model.DocumentContainer;
 import de.mannheimer.imd.avw.api.model.MimeType;

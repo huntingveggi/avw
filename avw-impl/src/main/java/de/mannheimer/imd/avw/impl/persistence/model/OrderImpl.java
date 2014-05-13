@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
-import de.ahaus.dennis.javautils.impl.helper.Assert;
+import de.mannheimer.imd.avw.api.commons.Assert;
 import de.mannheimer.imd.avw.api.model.Document;
 import de.mannheimer.imd.avw.api.model.Message;
 import de.mannheimer.imd.avw.api.model.Order;
