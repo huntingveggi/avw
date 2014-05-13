@@ -1,1 +1,57 @@
-Hallo!
+<html ng-app="avwApp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="resources/ico/favicon.ico">
+
+    <title>Auftragsverwaltung </title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="resources/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="resources/css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="resources/css/style.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="resources/js/html5shiv.js"></script>
+      <script src="resources/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+	<script src="resources/js/angular.js"></script>
+	<script src="resources/js/angular-animate.js"></script>
+	<script src="resources/js/angular-route.js"></script>
+	<script src="resources/js/app.js"></script>
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Auftragsverwaltung</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Auftr&auml;ge</a></li>
+            <li><a href="#about">Dokumente</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+	
+	<div class="container">
+		<p class="well">
+		  <a href="#/">Start</a> | <a href="#/about">Über</a>
+		</p>
+	 	<div ng-view></div>
+	</div>
+  
+ 	<script src="resources/js/bootstrap.min.js"></script>
+  </body>
+</html>
