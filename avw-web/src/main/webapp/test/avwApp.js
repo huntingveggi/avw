@@ -4,55 +4,62 @@
 
 var avwApp = angular.module('order', [ 'ngResource' ]);
 
-avwApp.config(['$httpProvider',function($httpProvider) {
+avwApp.config([ '$httpProvider', function($httpProvider) {
 	$httpProvider.defaults.useXDomain = true;
 	delete $httpProvider.defaults.headers.common['X-Requested-with'];
-}]);
+} ]);
 
-avwApp
-		.controller('OrderController',
-				[ '$scope', 'service', function($scope, service) {
+avwApp.controller('OrderController',
+		[ '$scope', 'service', function($scope, service) {
 
-					$scope.currentOrders = [];
-					$scope.order;
+			$scope.currentOrders = [];
+			$scope.order;
 
-					$scope.newInstance = function() {
-						$scope.order = service.newInstance();
-					};
+			$scope.newInstance = function() {
+				$scope.order = service.newInstance();
+			};
 
-					$scope.persist = function(order) {
-						service.persist(order);
-					};
+			$scope.persist = function(order) {
+				service.persist(order);
+			};
 
-				} ])
-		.factory(
-				'service',
-				[
-						'$http',
-						'$resource',
-						function($http, $resource) {
+			$scope.newInstance();
 
+		} ]).factory(
+		'service',
+		[
+				'$http',
+				'$resource',
+				function($http, $resource) {
+
+					return {
+
+						urlId : '',
+
+						newInstance : function() {
 							return {
-								newInstance : function() {
-									return {
-										id : '',
-										comment : ''
-									};
-								},
-								persist : function(order) {
-									var url = 'http://127.0.0.1:5984/baseball/6e1295ed6c29495e54cc05947f18c8af';
-									$http.defaults.useXDomain = true;
-//									var res = 	$resource(url);
-//									res.query(function(){
-//										res.$save();
-//									});
-									
-									$http.put(url, order).success(
-											function(result) {
-												console.log(result);
-											}).error(function(result) {
-										console.log(result);
-									});
-								}
+								id : 'Id',
+								comment : 'Comment'
 							};
-						} ]);
+						},
+						persist : function(order) {
+
+							url = 'http://127.0.0.1:5984/';
+
+							$http.get('http://127.0.0.1:5984/_uuids').success(
+									function(data) {
+										id = "" + data.uuids;
+										console.log("id url " + id);
+										url = url + "baseball/" + id;
+										console.log("afer url " + url);
+										$http.put(url, order).error(
+												function(d2) {
+													console.log(d2);
+												});
+									}).error(function(data) {
+								console.log("error " + data);
+							});
+
+						}
+					};
+				} ]);
