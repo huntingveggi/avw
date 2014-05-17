@@ -1,7 +1,6 @@
 package de.mannheimer.imd.avw.impl.persistence;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -11,6 +10,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -87,8 +87,20 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 		doc.setLastChangeDate(new Date());
 		doc.setVersion(-1);
 
-		DocumentContainer container = getDocumentContainerInstance(containerName);
+		DocumentContainer container = getContainerInstance(containerName);
 		doc.setContainer(container);
+
+		return doc;
+	}
+
+	@Override
+	public Document getNewInstance() {
+
+		DocumentImpl doc = new DocumentImpl();
+		doc.setId(getGenerator().createUniqueId());
+		doc.setCreationDate(new Date());
+		doc.setLastChangeDate(new Date());
+		doc.setVersion(-1);
 
 		return doc;
 	}
@@ -96,9 +108,10 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 	/**
 	 * @return
 	 */
-	protected DocumentContainer getDocumentContainerInstance(String name) {
+	@Override
+	public DocumentContainer getContainerInstance(String name) {
 
-		DocumentContainer container = findSingleByName(name);
+		DocumentContainer container = findSingleContainerByName(name);
 		if (container != null) {
 			return container;
 		}
@@ -125,7 +138,7 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 		Assert.notNull(input);
 
 		File target = getDocFile(doc);
-		logger.debug("Save document to " + target.getAbsolutePath());
+		logger.info("Save document to " + target.getAbsolutePath());
 		if (target.exists()) {
 			deletePhysical(doc);
 		}
@@ -149,7 +162,7 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 
 		logger.debug("Find stream for document " + doc);
 		File file = getDocFile(doc);
-		return new FileInputStream(file);
+		return FileUtils.openInputStream(file);
 	}
 
 	@Override
@@ -162,9 +175,34 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 
 		logger.info("Start persisting new document " + doc);
 
+		DocumentContainer container = doc.getContainer();
+		Assert.notNull(container);
+		doc.setVersion(getNextDocumentVersion(container));
+
 		super.persist(doc);
 
 		this.persistPhysical(doc, inputStream);
+
+	}
+
+	@Transactional
+	public int getNextDocumentVersion(DocumentContainer container) {
+
+		Assert.notNull(container);
+		int nextVersion = -1;
+		DocumentContainer found = findSingleContainerByName(container.getName());
+		logger.debug("Found container for container id {}: {}",
+				container.getId(), found);
+		if (found == null) {
+			return 1;
+		}
+
+		List<Document> documents = findBy(found);
+		logger.debug("Found {} documents with container {}", documents.size(),
+				found);
+		nextVersion = documents.size() + 1;
+		logger.debug("Next document version is {}", nextVersion);
+		return nextVersion;
 
 	}
 
@@ -199,7 +237,7 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 
 	@Override
 	@javax.transaction.Transactional
-	public List<DocumentContainer> findByName(String name) {
+	public List<DocumentContainer> findContainersByName(String name) {
 
 		List<DocumentContainer> containers = super.findByProperty("name", name,
 				DocumentContainer.class);
@@ -207,10 +245,11 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 
 	}
 
+	@Override
 	@javax.transaction.Transactional
-	public DocumentContainer findSingleByName(String name) {
+	public DocumentContainer findSingleContainerByName(String name) {
 
-		List<DocumentContainer> containers = findByName(name);
+		List<DocumentContainer> containers = findContainersByName(name);
 		if (!containers.isEmpty()) {
 			return containers.iterator().next();
 		}

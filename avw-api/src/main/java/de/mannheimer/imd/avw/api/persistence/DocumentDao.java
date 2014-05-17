@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import de.mannheimer.imd.avw.api.model.Document;
+import de.mannheimer.imd.avw.api.model.DocumentContainer;
 import de.mannheimer.imd.avw.api.model.MimeType;
 
 public interface DocumentDao extends CrudDao<Document>, DocumentContainerDao {
@@ -12,6 +13,12 @@ public interface DocumentDao extends CrudDao<Document>, DocumentContainerDao {
 
 	public Document getNewInstance(MimeType mimetype, String containerName);
 
+	public Document getNewInstance();
+
 	InputStream findStream(Document doc) throws IOException;
+
+	public abstract DocumentContainer findSingleContainerByName(String name);
+
+	public abstract DocumentContainer getContainerInstance(String name);
 
 }

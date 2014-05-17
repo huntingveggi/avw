@@ -22,6 +22,10 @@ public class ResponseMessage {
 		this.message = message;
 		this.responseModel = responseModel;
 	}
+	
+	public ResponseMessage(Object model) {
+		setModel(model);
+	}
 
 	@XmlAttribute
 	public int getStatusCode() {

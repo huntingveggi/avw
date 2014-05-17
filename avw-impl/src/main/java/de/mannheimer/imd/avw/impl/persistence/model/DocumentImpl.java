@@ -75,6 +75,14 @@ public class DocumentImpl extends HistoryImpl implements Document {
 		return this.mimeType;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.mannheimer.imd.avw.api.model.Document#setMimeType(de.mannheimer.imd
+	 * .avw.api.model.MimeType)
+	 */
+	@Override
 	public void setMimeType(MimeType mimetype) {
 
 		this.mimeType = mimetype;

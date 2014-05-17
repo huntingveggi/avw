@@ -37,6 +37,8 @@ public class WadlController {
 
 		for (RequestMappingInfo m : map.keySet()) {
 			RequestMappingMethod newM = new RequestMappingMethod();
+			HandlerMethod method = map.get(m);
+
 			newM.setMethodName(m.toString());
 
 			wrapper.getMethods().add(newM);

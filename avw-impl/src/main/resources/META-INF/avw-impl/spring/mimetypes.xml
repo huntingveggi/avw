@@ -10,14 +10,14 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-	<bean id="mimetype-pdf"
+	<bean id="mimetype-pdf" scope="prototype"
 		class="de.mannheimer.imd.avw.impl.persistence.model.MimeTypeImpl">
 		<property name="extension" value="pdf" />
 		<property name="mimeType" value="application/pdf" />
 		<property name="description" value="PDF mimetype" />
 	</bean>
 
-	<bean id="mimetype-docx"
+	<bean id="mimetype-docx" scope="prototype"
 		class="de.mannheimer.imd.avw.impl.persistence.model.MimeTypeImpl">
 		<property name="extension" value="docx" />
 		<property name="mimeType"
@@ -25,7 +25,7 @@
 		<property name="description" value="DOCX mimetype" />
 	</bean>
 
-	<bean id="mimetype-doc"
+	<bean id="mimetype-doc" scope="prototype"
 		class="de.mannheimer.imd.avw.impl.persistence.model.MimeTypeImpl">
 		<property name="extension" value="doc" />
 		<property name="mimeType" value="application/msword" />

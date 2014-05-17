@@ -4,11 +4,6 @@
 
 var baseUrl = "/avw-web";
 
-var urls = {
-	URL_DOC:baseUrl + "/doc.jsp",
-	URL_ORDERS:"asdasd",
-};
-
 var avwControllers = angular.module('avwControllers', []);
 
 avwControllers.controller('HomeController', function($scope, $http) {
