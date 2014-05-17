@@ -10,7 +10,6 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -241,6 +240,16 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 
 		List<DocumentContainer> containers = super.findByProperty("name", name,
 				DocumentContainer.class);
+		return containers;
+
+	}
+
+	@Override
+	@javax.transaction.Transactional
+	public List<DocumentContainer> findAllContainers() {
+
+		List<DocumentContainer> containers = super
+				.findAll(DocumentContainer.class);
 		return containers;
 
 	}

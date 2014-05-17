@@ -40,8 +40,22 @@ avwControllers
 										});
 							};
 
+							// find available containers
+							$scope.findAvailableContainers = function() {
+								$http
+										.get(baseUrl + "/containers/.json")
+										.success(
+												function(result) {
+													$scope.containers = result.responseMessage.model;
+													LOG($scope.containers);
+												}).error(function(result) {
+											LOG("ERROR: " + result);
+										});
+							};
+
 						} ]);
 
 function LOG(object) {
 	console.log(object);
 }
+

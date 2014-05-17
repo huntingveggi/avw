@@ -2,6 +2,7 @@ package de.mannheimer.imd.avw.api.persistence;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import de.mannheimer.imd.avw.api.model.Document;
 import de.mannheimer.imd.avw.api.model.DocumentContainer;
@@ -20,5 +21,7 @@ public interface DocumentDao extends CrudDao<Document>, DocumentContainerDao {
 	public abstract DocumentContainer findSingleContainerByName(String name);
 
 	public abstract DocumentContainer getContainerInstance(String name);
+
+	public abstract List<DocumentContainer> findAllContainers();
 
 }

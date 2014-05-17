@@ -56,14 +56,13 @@ public abstract class AbstractDao<T> implements CrudDao<T>,
 	 * @return
 	 */
 	@javax.transaction.Transactional
-	protected List<T> findAll(Class<? extends T> clazz) {
+	protected <X> List<X> findAll(Class<? extends X> clazz) {
 
 		Session session = getSessionfactory().getCurrentSession();
 		Criteria crit = session.createCriteria(clazz);
 		@SuppressWarnings("unchecked")
-		List<T> result = crit.list();
-		doLazyInitialize(result);
-		return new ArrayList<>(result);
+		List<X> result = crit.list();
+		return new ArrayList<X>(result);
 	}
 
 	/**

@@ -9,7 +9,7 @@ public class ResponseMessage {
 
 	int statusCode = 0;
 	String message = "Ok";
-	Object responseModel;
+	Object model;
 
 	public ResponseMessage() {
 
@@ -20,7 +20,7 @@ public class ResponseMessage {
 		super();
 		this.statusCode = statusCode;
 		this.message = message;
-		this.responseModel = responseModel;
+		this.model = responseModel;
 	}
 	
 	public ResponseMessage(Object model) {
@@ -52,12 +52,12 @@ public class ResponseMessage {
 	@XmlElement(name = "model")
 	public Object getModel() {
 
-		return responseModel;
+		return model;
 	}
 
 	public void setModel(Object responseModel) {
 
-		this.responseModel = responseModel;
+		this.model = responseModel;
 	}
 
 }

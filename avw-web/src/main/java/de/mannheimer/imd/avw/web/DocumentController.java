@@ -60,6 +60,8 @@ public class DocumentController {
 			@RequestParam String containerName, @RequestParam String mimetype,
 			ModelMap model) {
 
+		this.currentDocument = documentDao.getNewInstance();
+
 		logger.info(file.toString());
 		logger.info("Container: {}", containerName);
 		logger.info("mimetype: {}", mimetype);
@@ -123,10 +125,18 @@ public class DocumentController {
 		logger.debug("Try to get document stream for document {}", doc);
 
 		if (doc != null) {
+
 			OutputStream output = response.getOutputStream();
 			logger.debug("OutputStream is {}", output);
 			InputStream input = documentDao.findStream(doc);
 			logger.debug("Inputsream is {}", input);
+
+			response.setContentType("application/pdf");
+			response.setContentLength(input.available());
+			response.setHeader("Content-Disposition", "attachment; filename=\""
+					+ doc.getContainer().getName() + "_" + doc.getVersion()
+					+ ".pdf" + "\"");
+
 			IOUtils.copy(input, output);
 		}
 
