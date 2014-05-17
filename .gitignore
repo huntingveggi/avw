@@ -1,8 +1,12 @@
 target
 bin
 datasource.properties
+database.properties
 .springBeans
 .settings
 .classpath
 .project
+.
+temp
+.tern*
 temp
