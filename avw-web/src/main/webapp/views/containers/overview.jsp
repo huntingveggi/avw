@@ -11,7 +11,7 @@
 </head>
 <body>
 <body ng-controller="DocumentsController"
-	ng-init="findAvailableContainers()">
+	ng-init="findAllContainers()">
 	<h1>Containers overview</h1>
 	<hr>
 	<ul>

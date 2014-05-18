@@ -10,16 +10,19 @@
 
 </head>
 <body>
-<body ng-controller="DocumentsController">
-	<h1>Document details</h1>
+
+	<body ng-controller="DocumentsController">
+<h1>Document details</h1>
 	<hr>
-	Details:<br>
-	Document id : ${responseMessage.model.id}<br>
-	Container : <a href="http://localhost:8080/avw-web/containers/${responseMessage.model.container.name}/details">${responseMessage.model.container.name}</a><br><br>
-	
-	Mimetype name : ${responseMessage.model.mimeType.description} - ${responseMessage.model.mimeType.mimeType}<br>
-	Version : ${responseMessage.model.version}<br>
+	 Document id : ${response.model.id}
+	<br> Container :
+	<a
+		href="http://localhost:8080/avw-web/containers/${response.model.container.name}/details">${response.model.container.name}</a>
 	<br>
-	<a href="/avw-web/documents/${responseMessage.model.id}">Download</a>
-</body>
-</html>
+	<br> Mimetype name : ${response.model.mimeType.description}
+	- ${response.model.mimeType.mimeType}
+	<br> Version : ${response.model.version}
+	<br>
+	<br>
+	<a href="/avw-web/documents/${response.model.id}">Download</a>
+</body></html>

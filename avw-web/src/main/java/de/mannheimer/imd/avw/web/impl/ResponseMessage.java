@@ -4,6 +4,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.springframework.ui.ModelMap;
+
 @XmlRootElement(name = "response")
 public class ResponseMessage {
 
@@ -15,6 +17,16 @@ public class ResponseMessage {
 
 	}
 
+	public void build(ModelMap map) {
+
+		build("response", map);
+	}
+
+	public void build(String modelName, ModelMap map) {
+
+		map.addAttribute(modelName, this);
+	}
+
 	public ResponseMessage(int statusCode, String message, Object responseModel) {
 
 		super();
@@ -22,8 +34,9 @@ public class ResponseMessage {
 		this.message = message;
 		this.model = responseModel;
 	}
-	
+
 	public ResponseMessage(Object model) {
+
 		setModel(model);
 	}
 

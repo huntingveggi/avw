@@ -1,6 +1,5 @@
 package de.mannheimer.imd.avw.impl.persistence;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -29,7 +28,8 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
 	public List<Order> findAll() {
 
 		List<Order> orders = super.findAll(Order.class);
-		return new ArrayList<Order>(orders);
+		doLazyInitialize(orders);
+		return orders;
 	}
 
 	@Override

@@ -34,9 +34,7 @@ public class ContainerController {
 
 		List<DocumentContainer> containers = documentDao.findAllContainers();
 
-		ResponseMessage responseMessage = new ResponseMessage();
-		responseMessage.setModel(containers);
-		model.addAttribute(responseMessage);
+		new ResponseMessage(containers).build(model);
 
 		return "containers/overview";
 

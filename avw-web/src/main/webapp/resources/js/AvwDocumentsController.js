@@ -29,8 +29,20 @@ var app = angular
 										.get(baseUrl + "/documents/.json")
 										.success(
 												function(result) {
-													$scope.documents = result.responseMessage.model;
+													$scope.documents = result.response.model;
 													LOG($scope.documents);
+												}).error(function(result) {
+											LOG(result);
+										});
+							};
+
+							$scope.create = function() {
+								$http
+										.get(baseUrl + "/documents/create.json")
+										.success(
+												function(result) {
+													$scope.currentDocument = result.response.model;
+													LOG($scope.currentDocument);
 												}).error(function(result) {
 											LOG(result);
 										});
@@ -44,7 +56,7 @@ var app = angular
 														+ "/documents/mimetypes.json")
 										.success(
 												function(result) {
-													$scope.mimetypes = result.responseMessage.model.objects;
+													$scope.mimetypes = result.response.model;
 													LOG($scope.mimetypes);
 												}).error(function(result) {
 											LOG("ERROR: " + result);
@@ -73,12 +85,12 @@ var app = angular
 							};
 
 							// find available containers
-							$scope.findAvailableContainers = function() {
+							$scope.findAllContainers = function() {
 								$http
 										.get(baseUrl + "/containers/.json")
 										.success(
 												function(result) {
-													$scope.containers = result.responseMessage.model;
+													$scope.containers = result.response.model;
 													LOG($scope.containers);
 												}).error(function(result) {
 											LOG("ERROR: " + result);

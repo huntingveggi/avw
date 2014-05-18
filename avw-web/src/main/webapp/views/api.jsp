@@ -98,7 +98,7 @@ hr {
 	<div class="div-head">Show container details</div>
 	<div class="div-body">
 
-		http://localhost:8080/avw-web/container/ <input ng-model="containerId"
+		http://localhost:8080/avw-web/containers/ <input ng-model="containerId"
 			ng-init="containerId='type container id'" ng-click="containerId=''"
 			value="type containerId id" ng-minlength="1">/details
 		<button ng-click="showContainerDetails(containerId)">OPEN</button>

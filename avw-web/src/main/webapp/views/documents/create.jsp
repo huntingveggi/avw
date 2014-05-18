@@ -10,13 +10,14 @@
 
 </head>
 <body>
-<body ng-controller="DocumentsController">
+<body ng-controller="DocumentsController" ng-init="create()">
 	<h1>Create document</h1>
 	<hr>
 	<br>
 
 	<form action="/avw-web/documents/upload" method="POST"
 		enctype="multipart/form-data" accept="*/*">
+		id: {{currentDocument.id}}<br>
 		ContainerName: <input type="text" name="containerName"><br>
 		MimeType: <select name="mimetype" ng-init="findAvailableMimeTypes()">
 			<option ng-repeat="type in mimetypes" value="{{type.extension}}">{{type.extension}}</option>

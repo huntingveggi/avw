@@ -26,9 +26,7 @@ import de.mannheimer.imd.avw.api.model.DocumentContainer;
 import de.mannheimer.imd.avw.api.model.MimeType;
 import de.mannheimer.imd.avw.api.persistence.DocumentDao;
 import de.mannheimer.imd.avw.impl.persistence.MimeTypeFactory;
-import de.mannheimer.imd.avw.web.impl.MimeTypeWrapper;
 import de.mannheimer.imd.avw.web.impl.ResponseMessage;
-import de.mannheimer.imd.avw.web.impl.ResponseMessageFactory;
 
 @Controller
 @RequestMapping(value = "/documents")
@@ -48,8 +46,7 @@ public class DocumentController {
 
 		this.currentDocument = documentDao.getNewInstance();
 
-		ResponseMessage msg = new ResponseMessage(this.currentDocument);
-		model.addAttribute(msg);
+		new ResponseMessage(this.currentDocument).build(model);
 
 		return "documents/create";
 
@@ -85,7 +82,7 @@ public class DocumentController {
 			e.printStackTrace();
 		}
 
-		model.addAttribute(new ResponseMessage(this.currentDocument));
+		new ResponseMessage(this.currentDocument).build(model);
 
 		return "redirect:/documents/" + this.currentDocument.getId()
 				+ "/details";
@@ -97,10 +94,7 @@ public class DocumentController {
 
 		Collection<MimeType> types = MimeTypeFactory.getAvailableMimeTypes();
 
-		ResponseMessage response = ResponseMessageFactory
-				.createResponseMessage(new MimeTypeWrapper(types));
-
-		model.addAttribute(response);
+		new ResponseMessage(types).build(model);
 
 		return "mimetypes";
 
@@ -111,7 +105,7 @@ public class DocumentController {
 
 		this.currentDocument = documentDao.findById(documentId);
 
-		model.addAttribute(new ResponseMessage(this.currentDocument));
+		new ResponseMessage(this.currentDocument).build(model);
 
 		return "documents/details";
 
@@ -122,7 +116,7 @@ public class DocumentController {
 
 		List<Document> documents = documentDao.findAll();
 
-		model.addAttribute(new ResponseMessage(documents));
+		new ResponseMessage(documents).build(model);
 
 		return "documents/overview";
 
@@ -146,8 +140,8 @@ public class DocumentController {
 			response.setContentType("application/pdf");
 			response.setContentLength(input.available());
 			response.setHeader("Content-Disposition", "attachment; filename=\""
-					+ doc.getContainer().getName() + "_" + doc.getVersion()
-					+ ".pdf" + "\"");
+					+ doc.getId() + "_" + doc.getContainer().getName() + "_"
+					+ doc.getVersion() + ".pdf" + "\"");
 
 			IOUtils.copy(input, output);
 		}

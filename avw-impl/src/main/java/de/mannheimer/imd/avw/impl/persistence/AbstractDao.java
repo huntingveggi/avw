@@ -135,8 +135,7 @@ public abstract class AbstractDao<T> implements CrudDao<T>,
 	public void update(T obj) {
 
 		Session session = getSessionfactory().getCurrentSession();
-		session.update(obj);
-		session.flush();
+		session.saveOrUpdate(obj);
 	}
 
 	protected IdGenerator getGenerator() {
