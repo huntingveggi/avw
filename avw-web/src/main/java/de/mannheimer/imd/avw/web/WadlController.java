@@ -44,6 +44,7 @@ public class WadlController {
 			wrapper.getMethods().add(newM);
 		}
 		model.addAttribute("model", wrapper);
+		
 		return "api";
 
 	}

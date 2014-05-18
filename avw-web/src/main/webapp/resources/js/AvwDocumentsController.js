@@ -4,9 +4,14 @@
 
 var baseUrl = "/avw-web";
 
-var avwControllers = angular.module('documents', []);
+var app = angular
+		.module('documents', [])
 
-avwControllers
+		.config([ '$httpProvider', function($httpProvider) {
+			$httpProvider.defaults.useXDomain = true;
+			delete $httpProvider.defaults.headers.common['X-Requested-with'];
+		} ])
+
 		.controller(
 				'DocumentsController',
 				[
@@ -58,4 +63,3 @@ avwControllers
 function LOG(object) {
 	console.log(object);
 }
-

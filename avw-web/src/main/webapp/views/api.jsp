@@ -1,13 +1,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page session="false"%>
 <!doctype html>
-<html >
+<html>
 <head>
 
 <title>API</title>
 </head>
 <body>
-${model} 
+Documents
+	<div></div>
+	<div>${model}</div>
 </body>
 
 </html>
