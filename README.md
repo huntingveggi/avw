@@ -33,4 +33,9 @@ After cloning the project do the following tasks:
   jdbc.password=yourPassword
 
   ```
+  
+# Starting application
+
+Start your web server and call the url http://yourHost:yourPort/avw-web/. To see the current defined API's see
+url http://yourHost:yourPort/avw-web/api
     
