@@ -11,7 +11,8 @@
 </head>
 <body>
 <body ng-controller="DocumentsController">
-	Create document
+	<h1>Create document</h1>
+	<hr>
 	<br>
 
 	<form action="/avw-web/documents/upload" method="POST"
@@ -19,7 +20,7 @@
 		ContainerName: <input type="text" name="containerName"><br>
 		MimeType: <select name="mimetype" ng-init="findAvailableMimeTypes()">
 			<option ng-repeat="type in mimetypes" value="{{type.extension}}">{{type.extension}}</option>
-		</select><br> File: <input type="file" name="file"><br> <input
+		</select><br> File: <input type="file" name="file"><br> <br><input
 			type="submit" name="submit" value="submit"><br>
 	</form>
 </body>

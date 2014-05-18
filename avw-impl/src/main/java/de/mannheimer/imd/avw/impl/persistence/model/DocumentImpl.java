@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import de.mannheimer.imd.avw.api.commons.Assert;
 import de.mannheimer.imd.avw.api.model.Document;
 import de.mannheimer.imd.avw.api.model.DocumentContainer;
 import de.mannheimer.imd.avw.api.model.MimeType;
@@ -58,6 +59,8 @@ public class DocumentImpl extends HistoryImpl implements Document {
 	@Override
 	public void setContainer(DocumentContainer container) {
 
+		Assert.notNull(container);
+		Assert.notEmpty("Container name is emtpty", container.getName());
 		this.container = container;
 	}
 

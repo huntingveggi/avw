@@ -2,6 +2,10 @@
  * 
  */
 
+function LOG(object) {
+	console.log(object);
+}
+
 var baseUrl = "/avw-web";
 
 var app = angular
@@ -45,6 +49,22 @@ var app = angular
 										});
 							};
 
+							$scope.showDocumentDetails = function(id) {
+								var url = 'http://localhost:8080/avw-web/documents/'
+										+ id + '/details';
+								window.location.href = url;
+							};
+
+							// find available mimetyps by id
+							$scope.download = function(id) {
+
+								var url = 'http://localhost:8080/avw-web/documents/'
+										+ id;
+								console.log("new replaced url is " + url);
+
+								window.location.href = url;
+							};
+
 							// find available containers
 							$scope.findAvailableContainers = function() {
 								$http
@@ -59,7 +79,3 @@ var app = angular
 							};
 
 						} ]);
-
-function LOG(object) {
-	console.log(object);
-}
