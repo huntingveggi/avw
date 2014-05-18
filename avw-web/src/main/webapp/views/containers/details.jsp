@@ -11,13 +11,16 @@
 </head>
 <body>
 <body ng-controller="DocumentsController">
+
+	<h1>Container details</h1>
+	<hr>
 	Details:
 	<br> Container id : ${container.model.id}
 	<br>
-	Documents:
+	<br>Contained documents:
 	<br>
 	<c:forEach var="doc" items="${documents.model}">
-	${doc.id}<br>
+	<a href="http://localhost:8080/avw-web/documents/${doc.id}/details">${doc.id} - Version ${doc.version}</a><br>
 	</c:forEach>
 	<br>
 	<br>

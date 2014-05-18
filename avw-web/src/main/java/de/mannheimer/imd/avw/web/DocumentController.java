@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -113,6 +114,17 @@ public class DocumentController {
 		model.addAttribute(new ResponseMessage(this.currentDocument));
 
 		return "documents/details";
+
+	}
+
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String overview(ModelMap model) {
+
+		List<Document> documents = documentDao.findAll();
+
+		model.addAttribute(new ResponseMessage(documents));
+
+		return "documents/overview";
 
 	}
 

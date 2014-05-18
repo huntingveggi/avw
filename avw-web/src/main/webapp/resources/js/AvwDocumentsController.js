@@ -24,12 +24,14 @@ var app = angular
 						function($scope, $http) {
 
 							// find documents by id
-							$scope.findById = function(id) {
-								$http.get(baseUrl + "/orders/" + id + ".json")
-										.success(function(result) {
-											$scope.currentOrder = result.order;
-											LOG(result);
-										}).error(function(result) {
+							$scope.findAll = function() {
+								$http
+										.get(baseUrl + "/documents/.json")
+										.success(
+												function(result) {
+													$scope.documents = result.responseMessage.model;
+													LOG($scope.documents);
+												}).error(function(result) {
 											LOG(result);
 										});
 							};
@@ -55,12 +57,17 @@ var app = angular
 								window.location.href = url;
 							};
 
+							$scope.showContainerDetails = function(id) {
+								var url = 'http://localhost:8080/avw-web/containers/'
+										+ id + '/details';
+								window.location.href = url;
+							};
+
 							// find available mimetyps by id
 							$scope.download = function(id) {
 
 								var url = 'http://localhost:8080/avw-web/documents/'
 										+ id;
-								console.log("new replaced url is " + url);
 
 								window.location.href = url;
 							};

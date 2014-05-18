@@ -10,11 +10,13 @@
 
 </head>
 <body>
-<body ng-controller="DocumentsController" ng-init="findAvailableContainers()">
+<body ng-controller="DocumentsController"
+	ng-init="findAvailableContainers()">
+	<h1>Containers overview</h1>
+	<hr>
 	<ul>
 		<li ng-repeat="container in containers | orderBy:'id'">
-			{{container.id}} - {{container.name}}
-		</li>
+			{{container.id}} - {{container.name}}</li>
 	</ul>
 </body>
 </html>
