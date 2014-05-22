@@ -2,8 +2,6 @@
  * 
  */
 
-var baseUrl = "/avw-web";
-
 var avwControllers = angular.module('avwControllers', []);
 
 avwControllers.controller('HomeController', function($scope, $http) {

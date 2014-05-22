@@ -5,9 +5,14 @@
 <head>
 
 <title>Home</title>
+<jsp:include page="structure/head.jsp" />
 </head>
 <body>
 ${model} 
+
+
+
+<jsp:include page="structure/foot.jsp" />
 </body>
 
 </html>

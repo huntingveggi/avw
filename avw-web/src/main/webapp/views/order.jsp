@@ -3,12 +3,10 @@
 <!doctype html>
 <html ng-app="avwApp">
 <head>
-<%@include file="default.jsp"%>
 
 <title>Order</title>
-
+<jsp:include page="structure/head.jsp" />
 </head>
-<body>
 <body ng-controller="OrderController">
 
 	<table>
@@ -23,4 +21,6 @@
 			<td>{{currentOrder.comment}}</td>
 		</tr>
 	</table>
+<jsp:include page="structure/foot.jsp" />	
+</body>
 </html>
