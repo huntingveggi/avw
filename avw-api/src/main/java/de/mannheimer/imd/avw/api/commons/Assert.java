@@ -86,4 +86,23 @@ public class Assert {
 		throw new IllegalArgumentException(message);
 	}
 
+	/**
+	 * Checks an empty string if its length is 0
+	 * 
+	 * @param message
+	 *            The message to show when error
+	 * @param string
+	 *            The string to check if emtpty
+	 * @return true if string length != 0 else thow
+	 *         {@link IllegalArgumentException}
+	 */
+	public static boolean notEmpty(String message, String string) {
+
+		notNull(string);
+		if (string.length() == 0) {
+			throw new IllegalArgumentException(message);
+		}
+		return true;
+	}
+
 }

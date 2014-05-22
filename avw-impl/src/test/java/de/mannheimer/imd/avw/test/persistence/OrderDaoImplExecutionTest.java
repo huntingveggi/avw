@@ -133,11 +133,11 @@ public class OrderDaoImplExecutionTest {
 
 		MimeType mimeType1 = MimeTypeFactory.getByExtension("pdf");
 
-		Document doc1 = documentDao.getNewInstance(mimeType1);
+		Document doc1 = documentDao.getNewInstance(mimeType1, "ContainerType1");
 		newOrder.getDocuments().add(doc1);
 
 		MimeType mimeType2 = MimeTypeFactory.getByExtension("pdf");
-		Document doc2 = documentDao.getNewInstance(mimeType2);
+		Document doc2 = documentDao.getNewInstance(mimeType2,"ContainerType1");
 		newOrder.getDocuments().add(doc2);
 
 		orderDao.persist(newOrder);

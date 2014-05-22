@@ -24,7 +24,7 @@ To be done!
 
 After cloning the project do the following tasks:
 
-* create `avw-impl/src/main/resources/META-INF/database.properties` and `avw-web/src/main/webapp/META-INF/database.properties` with the following content:
+* create `avw-impl/src/main/resources/META-INF/datasource.properties` and `avw-web/src/main/webapp/META-INF/datasource.properties` with the following content:
 
    ```
   jdbc.driverClassName=org.mariadb.jdbc.Driver
@@ -33,4 +33,9 @@ After cloning the project do the following tasks:
   jdbc.password=yourPassword
 
   ```
+  
+# Starting application
+
+Start your web server and call the url http://yourHost:yourPort/avw-web/. To see the current defined API's see
+url http://yourHost:yourPort/avw-web/api
     

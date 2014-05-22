@@ -4,15 +4,27 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.springframework.ui.ModelMap;
+
 @XmlRootElement(name = "response")
 public class ResponseMessage {
 
 	int statusCode = 0;
 	String message = "Ok";
-	Object responseModel;
+	Object model;
 
 	public ResponseMessage() {
 
+	}
+
+	public void build(ModelMap map) {
+
+		build("response", map);
+	}
+
+	public void build(String modelName, ModelMap map) {
+
+		map.addAttribute(modelName, this);
 	}
 
 	public ResponseMessage(int statusCode, String message, Object responseModel) {
@@ -20,7 +32,12 @@ public class ResponseMessage {
 		super();
 		this.statusCode = statusCode;
 		this.message = message;
-		this.responseModel = responseModel;
+		this.model = responseModel;
+	}
+
+	public ResponseMessage(Object model) {
+
+		setModel(model);
 	}
 
 	@XmlAttribute
@@ -48,12 +65,12 @@ public class ResponseMessage {
 	@XmlElement(name = "model")
 	public Object getModel() {
 
-		return responseModel;
+		return model;
 	}
 
 	public void setModel(Object responseModel) {
 
-		this.responseModel = responseModel;
+		this.model = responseModel;
 	}
 
 }

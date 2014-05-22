@@ -1,7 +1,6 @@
 package de.mannheimer.imd.avw.impl.persistence;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -77,7 +76,7 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 	}
 
 	@Override
-	public Document getNewInstance(MimeType mimetype) {
+	public Document getNewInstance(MimeType mimetype, String containerName) {
 
 		Assert.notNull(mimetype);
 
@@ -87,8 +86,20 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 		doc.setLastChangeDate(new Date());
 		doc.setVersion(-1);
 
-		DocumentContainer container = getNewDocumentContainerInstance();
+		DocumentContainer container = getContainerInstance(containerName);
 		doc.setContainer(container);
+
+		return doc;
+	}
+
+	@Override
+	public Document getNewInstance() {
+
+		DocumentImpl doc = new DocumentImpl();
+		doc.setId(getGenerator().createUniqueId());
+		doc.setCreationDate(new Date());
+		doc.setLastChangeDate(new Date());
+		doc.setVersion(-1);
 
 		return doc;
 	}
@@ -96,11 +107,17 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 	/**
 	 * @return
 	 */
-	protected DocumentContainer getNewDocumentContainerInstance() {
+	@Override
+	public DocumentContainer getContainerInstance(String name) {
 
-		DocumentContainerImpl container = new DocumentContainerImpl();
-		container.setId(getGenerator().createUniqueId());
-		return container;
+		DocumentContainer container = findSingleContainerByName(name);
+		if (container != null) {
+			return container;
+		}
+		DocumentContainerImpl newContainer = new DocumentContainerImpl();
+		newContainer.setId(getGenerator().createUniqueId());
+		newContainer.setName(name);
+		return newContainer;
 	}
 
 	protected void deletePhysical(Document doc) {
@@ -120,7 +137,7 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 		Assert.notNull(input);
 
 		File target = getDocFile(doc);
-		logger.debug("Save document to " + target.getAbsolutePath());
+		logger.info("Save document to " + target.getAbsolutePath());
 		if (target.exists()) {
 			deletePhysical(doc);
 		}
@@ -144,7 +161,7 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 
 		logger.debug("Find stream for document " + doc);
 		File file = getDocFile(doc);
-		return new FileInputStream(file);
+		return FileUtils.openInputStream(file);
 	}
 
 	@Override
@@ -157,9 +174,34 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 
 		logger.info("Start persisting new document " + doc);
 
+		DocumentContainer container = doc.getContainer();
+		Assert.notNull(container);
+		doc.setVersion(getNextDocumentVersion(container));
+
 		super.persist(doc);
 
 		this.persistPhysical(doc, inputStream);
+
+	}
+
+	@Transactional
+	public int getNextDocumentVersion(DocumentContainer container) {
+
+		Assert.notNull(container);
+		int nextVersion = -1;
+		DocumentContainer found = findSingleContainerByName(container.getName());
+		logger.debug("Found container for container id {}: {}",
+				container.getId(), found);
+		if (found == null) {
+			return 1;
+		}
+
+		List<Document> documents = findBy(found);
+		logger.debug("Found {} documents with container {}", documents.size(),
+				found);
+		nextVersion = documents.size() + 1;
+		logger.debug("Next document version is {}", nextVersion);
+		return nextVersion;
 
 	}
 
@@ -183,12 +225,44 @@ public class DocumentDaoImpl extends AbstractDao<Document> implements
 	}
 
 	@Override
+	@javax.transaction.Transactional
 	public void doLazyInitialize(Document doc) {
 
 		if (doc != null) {
 			doc.getContainer().getId();
 			doc.getMimeType().getExtension();
 		}
+	}
+
+	@Override
+	@javax.transaction.Transactional
+	public List<DocumentContainer> findContainersByName(String name) {
+
+		List<DocumentContainer> containers = super.findByProperty("name", name,
+				DocumentContainer.class);
+		return containers;
+
+	}
+
+	@Override
+	@javax.transaction.Transactional
+	public List<DocumentContainer> findAllContainers() {
+
+		List<DocumentContainer> containers = super
+				.findAll(DocumentContainer.class);
+		return containers;
+
+	}
+
+	@Override
+	@javax.transaction.Transactional
+	public DocumentContainer findSingleContainerByName(String name) {
+
+		List<DocumentContainer> containers = findContainersByName(name);
+		if (!containers.isEmpty()) {
+			return containers.iterator().next();
+		}
+		return null;
 	}
 
 }

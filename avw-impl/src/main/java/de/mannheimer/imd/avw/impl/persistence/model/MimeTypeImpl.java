@@ -15,6 +15,7 @@ import de.mannheimer.imd.avw.api.model.MimeType;
 @Entity
 @Table(name = "mimetypes")
 @Access(AccessType.PROPERTY)
+@XmlRootElement
 public class MimeTypeImpl extends AbstractEntity implements MimeType {
 
 	private String mimeType;

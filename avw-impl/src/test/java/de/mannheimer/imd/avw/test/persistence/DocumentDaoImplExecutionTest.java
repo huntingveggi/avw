@@ -88,7 +88,7 @@ public class DocumentDaoImplExecutionTest {
 		assertNotNull(currentDocumentInputStream);
 
 		MimeType mimeType = MimeTypeFactory.getByExtension("pdf");
-		currentDocument = documentDao.getNewInstance(mimeType);
+		currentDocument = documentDao.getNewInstance(mimeType, "asdasd");
 
 		assertNotNull(currentDocument);
 
@@ -187,10 +187,11 @@ public class DocumentDaoImplExecutionTest {
 	public void testGetNewValidInstance() throws IOException {
 
 		MimeType mimeType = MimeTypeFactory.getByExtension("pdf");
-		Document doc = documentDao.getNewInstance(mimeType);
+		Document doc = documentDao.getNewInstance(mimeType, "TestContainer");
 		assertNotNull(doc);
 		assertNotNull(doc.getId());
 		assertNotNull(doc.getContainer());
+		assertTrue(doc.getContainer().getName().equals("TestContainer"));
 
 	}
 

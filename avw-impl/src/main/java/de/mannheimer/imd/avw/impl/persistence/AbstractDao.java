@@ -56,14 +56,13 @@ public abstract class AbstractDao<T> implements CrudDao<T>,
 	 * @return
 	 */
 	@javax.transaction.Transactional
-	protected List<T> findAll(Class<? extends T> clazz) {
+	protected <X> List<X> findAll(Class<? extends X> clazz) {
 
 		Session session = getSessionfactory().getCurrentSession();
 		Criteria crit = session.createCriteria(clazz);
 		@SuppressWarnings("unchecked")
-		List<T> result = crit.list();
-		doLazyInitialize(result);
-		return new ArrayList<>(result);
+		List<X> result = crit.list();
+		return new ArrayList<X>(result);
 	}
 
 	/**
@@ -84,6 +83,20 @@ public abstract class AbstractDao<T> implements CrudDao<T>,
 		T result = (T) crit.add(Restrictions.eq("id", id)).uniqueResult();
 		doLazyInitialize(result);
 		return result;
+	}
+
+	@javax.transaction.Transactional
+	protected <X> List<X> findByProperty(String propertyName, Object value,
+			Class<? extends X> clazz) {
+
+		Assert.notNull(propertyName);
+		Assert.notNull(value);
+
+		Session session = getSessionfactory().getCurrentSession();
+		Criteria crit = session.createCriteria(clazz);
+		@SuppressWarnings("unchecked")
+		List<X> result = crit.add(Restrictions.eq(propertyName, value)).list();
+		return new ArrayList<X>(result);
 	}
 
 	protected SessionFactory getSessionfactory() {
@@ -122,8 +135,7 @@ public abstract class AbstractDao<T> implements CrudDao<T>,
 	public void update(T obj) {
 
 		Session session = getSessionfactory().getCurrentSession();
-		session.update(obj);
-		session.flush();
+		session.saveOrUpdate(obj);
 	}
 
 	protected IdGenerator getGenerator() {

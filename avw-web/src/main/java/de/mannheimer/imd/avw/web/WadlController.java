@@ -37,11 +37,35 @@ public class WadlController {
 
 		for (RequestMappingInfo m : map.keySet()) {
 			RequestMappingMethod newM = new RequestMappingMethod();
+			HandlerMethod method = map.get(m);
+
 			newM.setMethodName(m.toString());
 
 			wrapper.getMethods().add(newM);
 		}
 		model.addAttribute("model", wrapper);
+		
+		return "api";
+
+	}
+	
+	@RequestMapping(value = "/api", method = RequestMethod.GET)
+	public String api(ModelMap model) {
+
+		ListWrapper wrapper = new ListWrapper();
+		Map<RequestMappingInfo, HandlerMethod> map = getMapping()
+				.getHandlerMethods();
+
+		for (RequestMappingInfo m : map.keySet()) {
+			RequestMappingMethod newM = new RequestMappingMethod();
+			HandlerMethod method = map.get(m);
+
+			newM.setMethodName(m.toString());
+
+			wrapper.getMethods().add(newM);
+		}
+		model.addAttribute("model", wrapper);
+		
 		return "api";
 
 	}

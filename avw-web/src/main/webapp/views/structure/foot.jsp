@@ -6,3 +6,4 @@
 <script src="/avw-web/resources/js/avwControllers.js"></script>
 
 <script src="/avw-web/resources/js/navigator.js"></script>
+<link href="/avw-web/resources/avw.css" rel="stylesheet" type="text/css">
